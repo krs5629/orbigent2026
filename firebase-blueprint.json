@@ -1,0 +1,120 @@
+{
+  "project": {
+    "name": "NRL Showcase",
+    "description": "Database for NRL Showcase dynamic content"
+  },
+  "roles": [
+    {
+      "id": "admin",
+      "description": "Administrator with full read/write access"
+    },
+    {
+      "id": "public",
+      "description": "Unauthenticated user with read-only access"
+    }
+  ],
+  "collections": [
+    {
+      "name": "mechanical_cad",
+      "description": "CAD and prototype items",
+      "schema": {
+        "title": { "type": "string", "required": true },
+        "type": { "type": "string", "required": true },
+        "desc": { "type": "string", "required": true },
+        "fileUrl": { "type": "string", "required": false },
+        "createdAt": { "type": "timestamp", "required": true }
+      },
+      "permissions": {
+        "read": ["admin", "public"],
+        "write": ["admin"]
+      }
+    },
+    {
+      "name": "mechanical_evolution",
+      "description": "Design evolution entries",
+      "schema": {
+        "version": { "type": "string", "required": true },
+        "majorChanges": { "type": "string", "required": true },
+        "reason": { "type": "string", "required": true },
+        "result": { "type": "string", "required": true },
+        "fileUrl": { "type": "string", "required": false },
+        "createdAt": { "type": "timestamp", "required": true }
+      },
+      "permissions": {
+        "read": ["admin", "public"],
+        "write": ["admin"]
+      }
+    },
+    {
+      "name": "electronics_diagrams",
+      "description": "Electronics wiring diagrams and media",
+      "schema": {
+        "title": { "type": "string", "required": true },
+        "desc": { "type": "string", "required": true },
+        "fileUrl": { "type": "string", "required": false },
+        "createdAt": { "type": "timestamp", "required": true }
+      },
+      "permissions": {
+        "read": ["admin", "public"],
+        "write": ["admin"]
+      }
+    },
+    {
+      "name": "programming_media",
+      "description": "Programming test videos or GIFs",
+      "schema": {
+        "title": { "type": "string", "required": true },
+        "fileUrl": { "type": "string", "required": true },
+        "createdAt": { "type": "timestamp", "required": true }
+      },
+      "permissions": {
+        "read": ["admin", "public"],
+        "write": ["admin"]
+      }
+    },
+    {
+      "name": "challenges",
+      "description": "Challenges timeline entries",
+      "schema": {
+        "title": { "type": "string", "required": true },
+        "date": { "type": "string", "required": true },
+        "status": { "type": "string", "required": true },
+        "desc": { "type": "string", "required": true },
+        "fileUrl": { "type": "string", "required": false },
+        "createdAt": { "type": "timestamp", "required": true }
+      },
+      "permissions": {
+        "read": ["admin", "public"],
+        "write": ["admin"]
+      }
+    },
+    {
+      "name": "media_highlights",
+      "description": "Match highlights and testing videos",
+      "schema": {
+        "title": { "type": "string", "required": true },
+        "videoUrl": { "type": "string", "required": true },
+        "createdAt": { "type": "timestamp", "required": true }
+      },
+      "permissions": {
+        "read": ["admin", "public"],
+        "write": ["admin"]
+      }
+    },
+    {
+      "name": "resources",
+      "description": "Downloadable resources and files",
+      "schema": {
+        "name": { "type": "string", "required": true },
+        "size": { "type": "string", "required": true },
+        "type": { "type": "string", "required": true },
+        "fileUrl": { "type": "string", "required": false },
+        "createdAt": { "type": "timestamp", "required": true }
+      },
+      "permissions": {
+        "read": ["admin", "public"],
+        "write": ["admin"]
+      }
+    }
+  ]
+}
