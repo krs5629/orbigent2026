@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Terminal, Play, X, FileCode } from 'lucide-react';
+import { Terminal, Play, X, FileCode, Sparkles, Download, ArrowRight, Code } from 'lucide-react';
 import { Uploader } from '../components/Uploader';
 import { db, storage, auth } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
@@ -54,59 +54,145 @@ export default function Programming() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-16">
-      <header className="col-span-1 md:col-span-4 space-y-4 mb-2">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Programming & Logic</h1>
-        <p className="text-lg text-slate-600 max-w-3xl leading-relaxed">
-          Upload control logic snippets and autonomous test videos.
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 0.4 }}
+      className="space-y-12 sm:space-y-16 pb-12"
+    >
+      <header className="space-y-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 text-xs sm:text-sm font-medium tracking-wide text-purple-300 backdrop-blur-md">
+          <Sparkles size={14} className="text-purple-400" />
+          <span>FIRMWARE & AUTONOMOUS SYSTEMS</span>
+        </div>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          Programming, Logic &{' '}
+          <span className="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-indigo-300 bg-clip-text text-transparent">
+            Control Algorithms
+          </span>
+        </h1>
+        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
+          Real-time sensor filtering, PID loop tuning, ESP32 servo kinematics, and video telemetry verification.
         </p>
       </header>
 
-      <section className="col-span-1 md:col-span-4 space-y-4">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 px-2 flex items-center gap-2">
-          <Terminal className="text-indigo-500" size={16}/> Logic Snippets
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {user && <Uploader label={uploadingS ? "Uploading..." : "Upload Snippet"} onUpload={(f) => handleUpload(f, false)} accept=".cpp,.h,.py,.ino,image/*" />}
+      {/* Logic Snippets Section */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
+              <Terminal size={20} />
+            </div>
+            <span>Logic Snippets & Firmware Files</span>
+          </h2>
+          <span className="text-xs text-zinc-400 font-mono">{snippets.length} Files</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {user && (
+            <div className="bg-zinc-950/80 rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-center items-center">
+              <Uploader label={uploadingS ? "Uploading..." : "Upload Code Snippet"} onUpload={(f) => handleUpload(f, false)} accept=".cpp,.h,.py,.ino,image/*" />
+            </div>
+          )}
+
           {snippets.map(s => (
-            <div key={s.id} className="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm relative group flex flex-col">
+            <div 
+              key={s.id} 
+              className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-300 relative group flex flex-col"
+            >
               {user && (
-                <button onClick={() => deleteItem('programming_logic', s.id, s.url)} className="absolute top-3 right-3 bg-rose-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-rose-600">
+                <button 
+                  onClick={() => deleteItem('programming_logic', s.id, s.url)} 
+                  className="absolute top-3 right-3 bg-rose-500/80 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-rose-600"
+                >
                   <X size={14}/>
                 </button>
               )}
-              <div className="w-full h-32 bg-[#1e1e1e] flex flex-col items-center justify-center text-emerald-500 relative">
-                <FileCode size={32} className="mb-2 opacity-50" />
-                <span className="text-[10px] font-mono tracking-wider">{s.name?.split('.').pop()}</span>
+
+              <div className="w-full h-40 bg-[#090710] flex flex-col items-center justify-center text-purple-400 relative border-b border-white/[0.06]">
+                <div className="w-12 h-12 rounded-xl bg-purple-950/60 border border-purple-500/30 flex items-center justify-center mb-2">
+                  <FileCode size={24} className="text-purple-300" />
+                </div>
+                <span className="text-[11px] font-mono text-purple-300 uppercase tracking-wider">
+                  {s.name?.split('.').pop() || 'CODE'} SOURCE
+                </span>
               </div>
-              <div className="p-4 border-t border-slate-100 flex-1 flex flex-col items-start justify-center">
-                <h3 className="font-bold text-slate-900 text-xs truncate w-full" title={s.name}>{s.name}</h3>
-                <a href={s.url} target="_blank" rel="noreferrer" className="text-[10px] text-indigo-500 hover:underline mt-1">Download</a>
+
+              <div className="p-5 flex-1 flex flex-col justify-between bg-zinc-950/60">
+                <h3 className="font-semibold text-white text-xs truncate w-full" title={s.name}>{s.name}</h3>
+                <div className="mt-3 pt-3 border-t border-white/[0.06] flex items-center justify-between">
+                  <a 
+                    href={s.url} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="inline-flex items-center gap-1 text-xs text-purple-400 hover:text-purple-300 font-medium"
+                  >
+                    <Download size={13} />
+                    <span>Download File</span>
+                  </a>
+                  <span className="text-[10px] text-zinc-500 font-mono">v1.0</span>
+                </div>
               </div>
             </div>
           ))}
+
+          {snippets.length === 0 && !user && (
+            <div className="col-span-full p-12 text-center bg-zinc-950/60 border border-white/[0.08] rounded-3xl">
+              <Code size={36} className="mx-auto text-purple-400/50 mb-3" />
+              <p className="text-zinc-400 text-sm">Code snippets, header files, and control loops will be shown here.</p>
+            </div>
+          )}
         </div>
       </section>
 
-      <section className="col-span-1 md:col-span-4 space-y-4 mt-4">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 px-2 flex items-center gap-2">
-          <Play className="text-rose-500" size={16}/> Test Videos & GIFs
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {user && <Uploader label={uploadingV ? "Uploading..." : "Upload Video/GIF"} onUpload={(f) => handleUpload(f, true)} accept="video/*,image/gif" />}
+      {/* Autonomous Test Videos Section */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
+              <Play size={20} />
+            </div>
+            <span>Test Bench Videos & Autonomous Telemetry</span>
+          </h2>
+          <span className="text-xs text-zinc-400 font-mono">{videos.length} Videos</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {user && (
+            <div className="bg-zinc-950/80 rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-center items-center">
+              <Uploader label={uploadingV ? "Uploading..." : "Upload Test Video/GIF"} onUpload={(f) => handleUpload(f, true)} accept="video/*,image/gif" />
+            </div>
+          )}
+
           {videos.map(v => (
-            <div key={v.id} className="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm relative group flex flex-col">
+            <div 
+              key={v.id} 
+              className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-300 relative group flex flex-col"
+            >
               {user && (
-                <button onClick={() => deleteItem('programming_media', v.id, v.url)} className="absolute top-3 right-3 bg-rose-500 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-rose-600">
+                <button 
+                  onClick={() => deleteItem('programming_media', v.id, v.url)} 
+                  className="absolute top-3 right-3 bg-rose-500/80 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-rose-600"
+                >
                   <X size={14}/>
                 </button>
               )}
-              <video src={v.url} className="w-full h-32 object-cover bg-slate-900" controls muted playsInline />
-              <div className="p-4 border-t border-slate-100 flex-1 flex items-center">
-                <h3 className="font-bold text-slate-900 text-xs truncate" title={v.name}>{v.name}</h3>
+              <div className="w-full h-52 bg-black relative">
+                <video src={v.url} className="w-full h-full object-cover" controls muted playsInline />
+              </div>
+              <div className="p-4 border-t border-white/[0.08] bg-zinc-950/60 flex items-center justify-between">
+                <h3 className="font-semibold text-white text-xs truncate" title={v.name}>{v.name}</h3>
+                <span className="text-[10px] text-purple-400 font-mono">TEST RUN</span>
               </div>
             </div>
           ))}
+
+          {videos.length === 0 && !user && (
+            <div className="col-span-full p-12 text-center bg-zinc-950/60 border border-white/[0.08] rounded-3xl">
+              <Play size={36} className="mx-auto text-purple-400/50 mb-3" />
+              <p className="text-zinc-400 text-sm">Autonomous test videos and benchmark telemetry will appear here.</p>
+            </div>
+          )}
         </div>
       </section>
     </motion.div>

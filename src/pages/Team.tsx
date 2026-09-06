@@ -1,12 +1,12 @@
 import { motion } from 'motion/react';
-import { Mail, Linkedin, Github } from 'lucide-react';
+import { Mail, Linkedin, Github, Sparkles, Users, Award, Heart } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { teamMembers as fallbackTeam } from '../data';
 
 export default function Team() {
-  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+  const [teamMembers, setTeamMembers] = useState<any[]>(fallbackTeam);
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -14,8 +14,6 @@ export default function Team() {
         const snap = await getDocs(collection(db, 'team'));
         if (!snap.empty) {
           setTeamMembers(snap.docs.map(doc => doc.data() as any));
-        } else {
-          setTeamMembers([]);
         }
       } catch (e) {
         console.error(e);
@@ -26,35 +24,62 @@ export default function Team() {
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-16"
+      transition={{ duration: 0.4 }}
+      className="space-y-12 sm:space-y-16 pb-12"
     >
-      <header className="col-span-1 md:col-span-4 space-y-4 mb-2">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Team & Mentors</h1>
-        <p className="text-lg text-slate-600 max-w-3xl leading-relaxed">
-          Building a combat robot takes a village. Meet the student engineers and industry mentors behind Team Apex.
+      <header className="space-y-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 text-xs sm:text-sm font-medium tracking-wide text-purple-300 backdrop-blur-md">
+          <Sparkles size={14} className="text-purple-400" />
+          <span>ROSTER & FACULTY LEADERSHIP</span>
+        </div>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          Engineering Team &{' '}
+          <span className="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-indigo-300 bg-clip-text text-transparent">
+            Mentors
+          </span>
+        </h1>
+        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
+          Building a high-performance combat robot takes relentless discipline. Meet the student innovators and faculty advisors behind Team Orbigent 160.
         </p>
       </header>
 
-      <section className="col-span-1 md:col-span-4 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
-        <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-6">Student Roster</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      {/* Student Roster Section */}
+      <section className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl p-8 sm:p-10 border border-white/[0.08] shadow-xl">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/[0.08]">
+          <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2.5">
+            <Users className="text-purple-400" size={22} />
+            <span>Student Engineering Roster</span>
+          </h2>
+          <span className="text-xs font-mono text-purple-300 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/30">
+            NRL 2026 DIVISION
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {teamMembers.map((member) => (
-            <div key={member.name} className="flex flex-col sm:flex-row gap-4 sm:gap-6 p-6 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow group">
-              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-xl shrink-0 ${member.color} shadow-sm group-hover:scale-105 transition-transform`}>
+            <div 
+              key={member.name} 
+              className="flex flex-col sm:flex-row gap-5 p-6 bg-zinc-900/40 rounded-2xl border border-white/[0.08] hover:border-purple-500/40 hover:bg-purple-950/10 transition-all duration-300 group"
+            >
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-xl shrink-0 bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.3)] group-hover:scale-105 transition-transform">
                 {member.initials}
               </div>
-              <div className="flex flex-col justify-between">
+
+              <div className="flex flex-col justify-between flex-1">
                 <div>
-                  <h3 className="font-bold text-lg text-slate-900 leading-tight">{member.name}</h3>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-indigo-600 mb-2 mt-1">{member.role}</p>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-4">{member.desc}</p>
+                  <h3 className="font-bold text-lg text-white group-hover:text-purple-300 transition-colors">{member.name}</h3>
+                  <div className="inline-block text-[11px] font-mono uppercase tracking-wider text-purple-400 font-semibold mb-2">
+                    {member.role}
+                  </div>
+                  <p className="text-sm text-zinc-300 leading-relaxed">{member.desc}</p>
                 </div>
-                <div className="flex gap-3 text-slate-400">
-                  <a href="#" className="hover:text-indigo-600 transition-colors"><Linkedin size={16} /></a>
-                  <a href="#" className="hover:text-indigo-600 transition-colors"><Github size={16} /></a>
-                  <a href="#" className="hover:text-indigo-600 transition-colors"><Mail size={16} /></a>
+                
+                <div className="flex gap-4 text-zinc-400 mt-4 pt-3 border-t border-white/[0.05]">
+                  <a href="#" className="hover:text-purple-400 transition-colors"><Linkedin size={16} /></a>
+                  <a href="#" className="hover:text-purple-400 transition-colors"><Github size={16} /></a>
+                  <a href="#" className="hover:text-purple-400 transition-colors"><Mail size={16} /></a>
                 </div>
               </div>
             </div>
@@ -62,21 +87,22 @@ export default function Team() {
         </div>
       </section>
 
-      <section className="col-span-1 md:col-span-4 bg-slate-900 text-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden flex flex-col md:flex-row gap-8 items-center md:items-start">
-        <div className="absolute top-0 left-0 p-12 opacity-5 pointer-events-none">
-          <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      {/* Mentor & Advisor Showcase Banner */}
+      <section className="bg-gradient-to-br from-[#120924] via-[#090712] to-[#050508] rounded-3xl p-8 sm:p-12 border border-purple-500/30 shadow-[0_0_40px_rgba(168,85,247,0.15)] relative overflow-hidden flex flex-col md:flex-row gap-8 items-center md:items-start">
+        <div className="w-24 h-24 rounded-2xl bg-purple-950/80 border-2 border-purple-500/40 flex items-center justify-center text-purple-300 shrink-0 shadow-[0_0_25px_rgba(168,85,247,0.3)]">
+          <Award size={40} className="text-purple-400" />
         </div>
-        <div className="w-24 h-24 rounded-full bg-slate-800 flex items-center justify-center text-slate-600 shrink-0 border-4 border-slate-700 shadow-xl relative z-10">
-          <span className="text-xs font-bold uppercase tracking-wider">Photo</span>
-        </div>
-        <div className="relative z-10 flex-1">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Mentors & Acknowledgments</h2>
-          <h3 className="font-bold text-2xl mb-1">Ms. Padma Srinidhi</h3>
-          <p className="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-6">AI Teacher & Lead Mentor</p>
-          <div className="relative">
-            <span className="absolute -top-4 -left-6 text-4xl text-slate-700 font-serif">"</span>
-            <p className="text-slate-300 leading-relaxed italic relative z-10">
-              Ms. Padma Srinidhi has been absolutely instrumental in our journey. Her guidance as our AI teacher helped us shape our autonomous programming strategies and taught us how to integrate intelligent systems into our design. Her unwavering support and dedication made this robot possible.
+
+        <div className="relative z-10 flex-1 text-center md:text-left space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/80 border border-purple-500/40 text-xs font-semibold uppercase tracking-wider text-purple-300">
+            <Heart size={12} className="text-purple-400" />
+            <span>Mentors & Acknowledgments</span>
+          </div>
+          <h3 className="font-extrabold text-2xl sm:text-3xl text-white">Ms. Padma Srinidhi</h3>
+          <p className="text-xs font-bold uppercase tracking-widest text-purple-400">AI Teacher & Lead Technical Mentor</p>
+          <div className="pt-2">
+            <p className="text-zinc-300 text-base sm:text-lg leading-relaxed italic font-light">
+              "Ms. Padma Srinidhi has been absolutely instrumental in our journey. Her guidance as our AI teacher helped us shape our autonomous programming strategies and taught us how to integrate intelligent systems into our design. Her unwavering support and dedication made this robot possible."
             </p>
           </div>
         </div>

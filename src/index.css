@@ -1,1 +1,52 @@
 @import "tailwindcss";
+
+@theme {
+  --color-purple-primary: #9333ea;
+  --color-purple-accent: #c084fc;
+  --font-sans: "Times New Roman", Times, serif;
+  --font-serif: "Times New Roman", Times, serif;
+  --font-mono: "Times New Roman", Times, serif;
+}
+
+@custom-variant dark (&:is(.dark *));
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+  font-family: "Times New Roman", Times, serif;
+}
+
+body {
+  @apply bg-[#050508] text-zinc-100 antialiased;
+  min-height: 100vh;
+  font-family: "Times New Roman", Times, serif !important;
+}
+
+*, *::before, *::after {
+  font-family: "Times New Roman", Times, serif !important;
+}
+
+::selection {
+  background-color: #9333ea;
+  color: #ffffff;
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090710;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #271f3a;
+  border-radius: 9999px;
+  border: 2px solid #090710;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #581c87;
+}

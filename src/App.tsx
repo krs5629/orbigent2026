@@ -24,9 +24,12 @@ export default function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="innovation" element={<Innovation />} />
-          <Route path="mechanical" element={<Mechanical />} />
-          <Route path="electronics" element={<Electronics />} />
-          <Route path="programming" element={<Programming />} />
+          <Route path="innovation/mechanical" element={<Mechanical />} />
+          <Route path="innovation/electronics" element={<Electronics />} />
+          <Route path="innovation/programming" element={<Programming />} />
+          <Route path="robot/mechanical" element={<Mechanical />} />
+          <Route path="robot/electronics" element={<Electronics />} />
+          <Route path="robot/programming" element={<Programming />} />
           <Route path="challenges" element={<Challenges />} />
           <Route path="blog" element={<Blog />} />
           <Route path="media" element={<Media />} />

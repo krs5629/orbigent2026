@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Download, X, File } from 'lucide-react';
+import { Download, X, File, Sparkles, FileText, ArrowDownToLine } from 'lucide-react';
 import { Uploader } from '../components/Uploader';
 import { db, storage, auth } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
@@ -50,46 +50,83 @@ export default function Resources() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-16">
-      <header className="col-span-1 md:col-span-4 space-y-4 mb-2">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Resources & Downloads</h1>
-        <p className="text-lg text-slate-600 max-w-3xl leading-relaxed">
-          Upload documents, PDFs, and configuration files for easy access.
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 0.4 }}
+      className="space-y-12 sm:space-y-16 pb-12"
+    >
+      <header className="space-y-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 text-xs sm:text-sm font-medium tracking-wide text-purple-300 backdrop-blur-md">
+          <Sparkles size={14} className="text-purple-400" />
+          <span>OFFICIAL DOCUMENTATION</span>
+        </div>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          Engineering Resources &{' '}
+          <span className="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-indigo-300 bg-clip-text text-transparent">
+            Downloads
+          </span>
+        </h1>
+        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
+          Official NRL rulebook compliance checklists, bill of materials (BOM), CAD exports, and team presentation slide decks.
         </p>
       </header>
 
-      <div className="col-span-1 md:col-span-4 grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="space-y-6">
         {user && (
-          <div className="col-span-1 md:col-span-1">
-            <Uploader label={uploading ? "Uploading..." : "Upload Resource"} onUpload={handleUpload} />
+          <div className="bg-zinc-950/80 rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-center items-center">
+            <Uploader label={uploading ? "Uploading..." : "Upload Resource Document"} onUpload={handleUpload} />
           </div>
         )}
         
-        <div className={`col-span-1 ${user ? 'md:col-span-3' : 'md:col-span-4'} bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm flex flex-col`}>
-          <div className="p-6 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">Available Files</h2>
-            <span className="text-[10px] bg-slate-200 text-slate-500 px-2 py-1 rounded font-bold uppercase tracking-wider">{resources.length} FILES</span>
+        <div className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl border border-white/[0.08] hover:border-purple-500/30 overflow-hidden shadow-xl flex flex-col transition-all">
+          <div className="p-6 sm:p-8 border-b border-white/[0.08] bg-zinc-900/40 flex items-center justify-between">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-purple-400">Available Technical Documents</h2>
+            <span className="text-xs font-mono text-purple-300 bg-purple-950/60 border border-purple-500/30 px-3 py-1 rounded-full font-semibold">
+              {resources.length} FILES
+            </span>
           </div>
-          <ul className="divide-y divide-slate-100 flex-1">
-            {resources.length === 0 && <li className="p-8 text-center text-slate-400 text-sm">No resources uploaded yet.</li>}
+
+          <ul className="divide-y divide-white/[0.06] flex-1">
+            {resources.length === 0 && (
+              <li className="p-12 text-center text-zinc-400 text-sm">
+                No resources published yet.
+              </li>
+            )}
             {resources.map((res) => (
-              <li key={res.id} className="p-4 sm:px-6 flex items-center justify-between hover:bg-slate-50 transition-colors group">
+              <li key={res.id} className="p-5 sm:px-8 flex items-center justify-between hover:bg-purple-950/10 transition-colors group">
                 <div className="flex items-center gap-4 overflow-hidden">
-                  <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0 border border-indigo-100 shadow-sm">
-                    <File size={18} />
+                  <div className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(168,85,247,0.15)] group-hover:scale-105 transition-transform">
+                    <FileText size={22} />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-bold text-slate-900 truncate">{res.name}</h3>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">{res.size} • Document</p>
+                    <h3 className="font-semibold text-white truncate text-sm sm:text-base group-hover:text-purple-300 transition-colors">
+                      {res.name}
+                    </h3>
+                    <p className="text-xs text-zinc-400 font-mono mt-0.5">
+                      {res.size} • PDF / Technical Asset
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 shrink-0 ml-4">
-                  <a href={res.url} target="_blank" rel="noreferrer" className="p-3 text-slate-300 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors" title="Download">
-                    <Download size={18} />
+
+                <div className="flex items-center gap-3 shrink-0 ml-4">
+                  <a 
+                    href={res.url} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-purple-950/60 border border-purple-500/30 text-purple-300 hover:text-white hover:bg-purple-900/60 text-xs font-medium transition-all" 
+                    title="Download"
+                  >
+                    <ArrowDownToLine size={14} />
+                    <span className="hidden sm:inline">Download</span>
                   </a>
                   {user && (
-                    <button onClick={() => deleteItem(res.id, res.url)} className="p-3 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-colors" title="Remove">
-                      <X size={18} />
+                    <button 
+                      onClick={() => deleteItem(res.id, res.url)} 
+                      className="p-2 text-zinc-500 hover:text-rose-400 transition-colors" 
+                      title="Remove"
+                    >
+                      <X size={16} />
                     </button>
                   )}
                 </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { CalendarDays, X, Image as ImageIcon } from 'lucide-react';
+import { CalendarDays, X, Image as ImageIcon, Sparkles, Send, Tag } from 'lucide-react';
 import { db, auth, storage } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
@@ -42,7 +42,7 @@ export default function Blog() {
         imageUrl,
         date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
         createdAt: new Date(),
-        tags: ['Update']
+        tags: ['Update', 'Engineering']
       });
 
       setForm({ title: '', excerpt: '', author: 'Admin' });
@@ -67,68 +67,129 @@ export default function Blog() {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-16">
-      <header className="col-span-1 md:col-span-4 space-y-4 mb-2">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Season Journey Blog</h1>
-        <p className="text-lg text-slate-600 max-w-3xl leading-relaxed">
-          Log your daily progress, machining notes, and updates here.
+    <motion.div 
+      initial={{ opacity: 0, y: 15 }} 
+      animate={{ opacity: 1, y: 0 }} 
+      transition={{ duration: 0.4 }}
+      className="space-y-12 sm:space-y-16 pb-12"
+    >
+      <header className="space-y-4">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 text-xs sm:text-sm font-medium tracking-wide text-purple-300 backdrop-blur-md">
+          <Sparkles size={14} className="text-purple-400" />
+          <span>ENGINEERING DISPATCHES</span>
+        </div>
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+          Season Journey &{' '}
+          <span className="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-indigo-300 bg-clip-text text-transparent">
+            Technical Logs
+          </span>
+        </h1>
+        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
+          Daily progress records, test-fire logs, CNC machining breakthroughs, and official NRL 2026 competition notes.
         </p>
       </header>
 
+      {/* Admin Post Creator */}
       {user && (
-        <section className="col-span-1 md:col-span-4 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col gap-4">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400">Post New Entry</h2>
-          <input type="text" placeholder="Title" value={form.title} onChange={e => setForm({...form, title: e.target.value})} className="p-3 rounded-xl border border-slate-200 text-sm" />
-          <textarea placeholder="What did you do today?" value={form.excerpt} onChange={e => setForm({...form, excerpt: e.target.value})} className="p-3 rounded-xl border border-slate-200 text-sm h-24" />
-          
-          <div className="flex items-center gap-4">
-            <label className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 transition-colors text-sm font-bold text-slate-600">
-              <ImageIcon size={18} className="text-indigo-500" />
-              {imageFile ? imageFile.name : 'Attach Image (Optional)'}
-              <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="hidden" />
-            </label>
-            {imageFile && (
-              <button onClick={() => setImageFile(null)} className="text-rose-500 text-sm hover:underline font-bold">Remove</button>
-            )}
+        <section className="bg-zinc-950/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col gap-4">
+          <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-purple-400 flex items-center gap-2">
+              <Sparkles size={14} /> New Engineering Dispatch
+            </h2>
+            <span className="text-xs font-mono text-zinc-400">Authenticated as {user.email || 'Lead'}</span>
           </div>
 
-          <button onClick={addPost} disabled={uploading} className="bg-indigo-600 text-white font-bold uppercase tracking-wider text-xs py-3 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50 mt-2">
-            {uploading ? 'Posting...' : 'Post Entry'}
-          </button>
+          <input 
+            type="text" 
+            placeholder="Post Title (e.g. Day 42: CNC Machined Billet Weapon Shaft Completed)..." 
+            value={form.title} 
+            onChange={e => setForm({...form, title: e.target.value})} 
+            className="p-3.5 rounded-xl bg-black/60 border border-white/20 text-white text-sm focus:border-purple-500 focus:outline-none placeholder:text-zinc-600" 
+          />
+          <textarea 
+            placeholder="Document what the team built, tested, or debugged today..." 
+            value={form.excerpt} 
+            onChange={e => setForm({...form, excerpt: e.target.value})} 
+            className="p-3.5 rounded-xl bg-black/60 border border-white/20 text-white text-sm h-28 focus:border-purple-500 focus:outline-none placeholder:text-zinc-600" 
+          />
+          
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+            <div className="flex items-center gap-3">
+              <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-zinc-900 border border-white/15 rounded-xl cursor-pointer hover:border-purple-400/50 transition-colors text-xs font-semibold text-zinc-300">
+                <ImageIcon size={16} className="text-purple-400" />
+                <span>{imageFile ? imageFile.name : 'Attach Image (Optional)'}</span>
+                <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files?.[0] || null)} className="hidden" />
+              </label>
+              {imageFile && (
+                <button onClick={() => setImageFile(null)} className="text-rose-400 text-xs hover:underline font-medium">Remove</button>
+              )}
+            </div>
+
+            <button 
+              onClick={addPost} 
+              disabled={uploading} 
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-xs px-6 py-3 rounded-xl hover:from-purple-500 hover:to-indigo-500 transition-all disabled:opacity-50 flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+            >
+              <Send size={14} />
+              <span>{uploading ? 'Publishing...' : 'Publish Dispatch'}</span>
+            </button>
+          </div>
         </section>
       )}
 
-      <div className="col-span-1 md:col-span-4 space-y-4 mt-4">
+      {/* Posts List */}
+      <div className="space-y-6">
         {posts.length === 0 && (
-          <p className="text-slate-500 p-8 text-center bg-slate-50 rounded-3xl border border-slate-200">
-            No blog posts yet. {user ? "Log your first entry above!" : "Log in via Admin to start posting."}
-          </p>
+          <div className="text-zinc-400 p-12 text-center bg-zinc-950/60 rounded-3xl border border-white/[0.08]">
+            <p className="text-sm">No blog dispatches recorded yet. {user ? "Publish your first log above!" : "Log in via Admin to start publishing updates."}</p>
+          </div>
         )}
+
         {posts.map(post => (
-          <article key={post.id} className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm relative group overflow-hidden">
+          <article 
+            key={post.id} 
+            className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_35px_rgba(168,85,247,0.12)] transition-all duration-300 relative group overflow-hidden"
+          >
             {user && (
-              <button onClick={() => deletePost(post.id, post.imageUrl)} className="absolute top-6 right-6 text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                <X size={20} />
+              <button 
+                onClick={() => deletePost(post.id, post.imageUrl)} 
+                className="absolute top-6 right-6 text-zinc-500 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity z-10 p-1"
+              >
+                <X size={18} />
               </button>
             )}
-            <div className="flex flex-col md:flex-row gap-6">
-              <div className="flex-1">
-                <div className="flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">
-                  <span className="flex items-center gap-1.5 text-indigo-500"><CalendarDays size={14} /> {post.date}</span>
-                  <span>•</span>
-                  <span>{post.author}</span>
+
+            <div className="flex flex-col lg:flex-row gap-8 items-start">
+              <div className="flex-1 space-y-4">
+                <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-purple-400">
+                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/30">
+                    <CalendarDays size={13} /> {post.date}
+                  </span>
+                  <span className="text-zinc-500">•</span>
+                  <span className="text-zinc-300 font-mono">By {post.author}</span>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-4">{post.title}</h2>
-                <p className="text-slate-600 leading-relaxed mb-6 whitespace-pre-wrap">{post.excerpt}</p>
-                <div className="flex gap-2">
+
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight leading-snug">
+                  {post.title}
+                </h2>
+
+                <p className="text-zinc-300 leading-relaxed text-base whitespace-pre-wrap font-light">
+                  {post.excerpt}
+                </p>
+
+                <div className="flex flex-wrap gap-2 pt-3">
                   {post.tags?.map((tag: string) => (
-                    <span key={tag} className="px-3 py-1 bg-slate-100 text-slate-500 rounded-lg text-xs font-bold tracking-wide uppercase">{tag}</span>
+                    <span key={tag} className="inline-flex items-center gap-1 px-3 py-1 bg-zinc-900 border border-white/10 text-purple-300 rounded-full text-xs font-medium">
+                      <Tag size={11} className="text-purple-400" />
+                      <span>{tag}</span>
+                    </span>
                   ))}
                 </div>
               </div>
+
               {post.imageUrl && (
-                <div className="w-full md:w-1/3 shrink-0">
-                  <img src={post.imageUrl} alt={post.title} className="w-full h-48 md:h-full object-cover rounded-2xl bg-slate-100 border border-slate-200" />
+                <div className="w-full lg:w-72 shrink-0 rounded-2xl overflow-hidden border border-white/10 shadow-lg bg-black">
+                  <img src={post.imageUrl} alt={post.title} className="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
               )}
             </div>

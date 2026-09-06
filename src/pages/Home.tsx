@@ -1,70 +1,313 @@
 import { motion } from 'motion/react';
-import { Rocket, Target, Award, ArrowRight } from 'lucide-react';
+import { 
+  Rocket, 
+  Target, 
+  ArrowRight, 
+  Wrench, 
+  Cpu, 
+  Code, 
+  ShieldCheck, 
+  Sparkles, 
+  Layers, 
+  Activity,
+  CheckCircle2
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="grid grid-cols-1 md:grid-cols-4 gap-4 pb-16"
+      transition={{ duration: 0.3 }}
+      className="space-y-16 sm:space-y-24 pb-16"
     >
-      <header className="col-span-1 md:col-span-4 bg-indigo-600 rounded-3xl p-8 flex flex-col justify-between text-white shadow-xl relative overflow-hidden min-h-[300px]">
-        <div className="relative z-10">
-          <h1 className="text-4xl font-black mb-2">Team Orbigent 160</h1>
-          <p className="text-indigo-100 max-w-sm">
-            Pioneering next-gen robotics for the 2026 NRL Showcase. Bridging the gap between theory and industrial application.
-          </p>
+      {/* =========================================================================
+          1. HERO SECTION (Ridgevyn Monumental Headline + Pill Badge + Actions)
+         ========================================================================= */}
+      <section className="relative pt-6 sm:pt-12 text-center flex flex-col items-center max-w-4xl mx-auto">
+        
+        {/* Top Eyebrow Pill Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 text-xs sm:text-sm font-medium tracking-wide text-purple-300 mb-8 backdrop-blur-md shadow-[0_0_20px_rgba(168,85,247,0.2)]">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="font-semibold text-white">TEAM ORBIGENT 160</span>
+          <span className="text-purple-400">•</span>
+          <span className="text-zinc-300">NRL 2026 SHOWCASE</span>
         </div>
-        <div className="relative z-10 flex flex-wrap gap-4 items-end mt-12">
-          <div className="px-4 py-2 bg-white/10 rounded-full text-sm backdrop-blur-md border border-white/20 font-medium">EST. 2024</div>
-          <div className="px-4 py-2 bg-white/10 rounded-full text-sm backdrop-blur-md border border-white/20 font-medium">12 CHALLENGES</div>
-        </div>
-        <div className="absolute -right-12 -bottom-12 w-64 h-64 bg-indigo-400/30 rounded-full blur-3xl"></div>
-      </header>
 
-      <section className="col-span-1 md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col hover:shadow-md transition-shadow">
-        <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mb-6">
-          <Target size={24} />
-        </div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-3">Our Mission</h2>
-        <p className="text-slate-600 leading-relaxed flex-1">
-          To design and build a combat robot that exemplifies robust engineering principles while pushing the boundaries of autonomous control and innovative material science. We strive to learn, adapt, and share our knowledge with the STEM community.
+        {/* Monumental Headline with Purple Gradient */}
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-white leading-[1.1] mb-6">
+          Pioneering Next-Gen Robotics for the{' '}
+          <span className="bg-gradient-to-r from-purple-400 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+            2026 NRL Arena
+          </span>
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-base sm:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed mb-10 font-light">
+          Bridging the gap between theoretical classroom physics and industrial-grade applied engineering. High-performance combat robotics engineered with precision CNC machining, custom high-current power distribution, and closed-loop autonomous stabilization.
         </p>
+
+        {/* CTA Button Group */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md sm:max-w-none">
+          <Link
+            to="/innovation"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 text-white text-sm sm:text-base font-semibold tracking-wide shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:shadow-[0_0_35px_rgba(168,85,247,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+          >
+            <span>Explore Innovation Process</span>
+            <ArrowRight size={18} />
+          </Link>
+
+          <Link
+            to="/innovation/mechanical"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-white/15 bg-white/[0.04] text-white hover:bg-white/[0.08] hover:border-purple-500/40 text-sm sm:text-base font-medium tracking-wide transition-all backdrop-blur-md cursor-pointer"
+          >
+            <Layers size={18} className="text-purple-300" />
+            <span>View Robot CAD Models</span>
+          </Link>
+        </div>
+
+        {/* 4 Metric / Highlight Cards (Ridgevyn Signature Style) */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 w-full mt-14 sm:mt-18 text-left">
+          {[
+            { metric: 'EST. 2024', label: 'Founded at Westside Tech', desc: 'Hands-on student engineering' },
+            { metric: '12 CHALLENGES', label: 'Season Milestones', desc: 'Comprehensive technical binder' },
+            { metric: '100% CAD DRIVEN', label: 'CNC Milled & 3D Printed', desc: '6061-T6 Aluminum & Carbon' },
+            { metric: 'CLOSED-LOOP', label: 'ESP32 & Dual IMUs', desc: 'Active tremor & motor control' },
+          ].map((stat, idx) => (
+            <div 
+              key={idx}
+              className="p-5 sm:p-6 rounded-2xl bg-[#0e0b18]/70 border border-white/[0.08] hover:border-purple-500/30 transition-all backdrop-blur-xl shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.12)]"
+            >
+              <div className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-1 bg-gradient-to-r from-white via-purple-100 to-purple-300 bg-clip-text text-transparent">
+                {stat.metric}
+              </div>
+              <div className="text-xs font-semibold text-purple-300 mb-1">{stat.label}</div>
+              <div className="text-[11px] text-zinc-400 font-light">{stat.desc}</div>
+            </div>
+          ))}
+        </div>
+
       </section>
 
-      <section className="col-span-1 md:col-span-2 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col hover:shadow-md transition-shadow">
-        <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center mb-6">
-          <Rocket size={24} />
+      {/* =========================================================================
+          2. CORE MISSION & FOUNDATION (2 High-Contrast Ridgevyn Feature Cards)
+         ========================================================================= */}
+      <section className="space-y-6">
+        <div className="text-center max-w-2xl mx-auto space-y-2">
+          <div className="text-xs font-bold uppercase tracking-widest text-purple-400">Our Foundation</div>
+          <h2 className="text-3xl sm:text-4xl font-semibold text-white tracking-tight">Engineering Driven by Purpose</h2>
+          <p className="text-sm text-zinc-400 font-light">Combining competitive combat robotics with impactful biomedical innovation.</p>
         </div>
-        <h2 className="text-2xl font-bold text-slate-900 mb-3">Why NRL?</h2>
-        <p className="text-slate-600 leading-relaxed flex-1">
-          The National Robotics League gives us the ultimate testing ground. It bridges the gap between theoretical classroom physics and real-world applied engineering. It's not just about winning battles; it's about mastering the manufacturing process.
-        </p>
-      </section>
 
-      <section className="col-span-1 md:col-span-4 bg-slate-900 text-white rounded-3xl p-8 sm:p-12 relative overflow-hidden flex flex-col md:flex-row gap-8 items-center justify-between">
-        <div className="absolute top-0 right-0 p-12 opacity-10 pointer-events-none">
-          <svg width="200" height="200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        </div>
-        <div className="relative z-10 space-y-6 max-w-2xl flex-1">
-          <div className="flex justify-between items-start mb-2">
-             <h2 className="text-xs font-bold uppercase tracking-wider text-slate-500">About Westside Tech</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Card 1: Our Mission */}
+          <div className="p-8 sm:p-10 rounded-3xl bg-[#0e0b18]/80 border border-white/[0.08] hover:border-purple-500/40 transition-all duration-300 backdrop-blur-xl shadow-xl hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col justify-between group">
+            <div className="space-y-6">
+              <div className="w-14 h-14 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.25)] group-hover:scale-105 transition-transform">
+                <Target size={28} />
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-white tracking-tight">Our Mission</h3>
+                <p className="text-zinc-300 leading-relaxed text-base font-light">
+                  To design and build a combat robot that exemplifies robust engineering principles while pushing the boundaries of autonomous control and innovative material science. We strive to learn, adapt, and share our knowledge with the STEM community.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 pt-6 mt-6 border-t border-white/[0.06]">
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-950/50 border border-purple-500/20 text-purple-300">Material Science</span>
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-950/50 border border-purple-500/20 text-purple-300">Autonomous Control</span>
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-950/50 border border-purple-500/20 text-purple-300">STEM Knowledge Sharing</span>
+            </div>
           </div>
-          <h3 className="text-3xl font-bold">Fostering Technical Innovation</h3>
-          <p className="text-slate-300 leading-relaxed text-lg">
-            With access to state-of-the-art CNC machining and 3D printing labs, our robotics club was founded to give students hands-on experience in full-cycle product development. 
-          </p>
+
+          {/* Card 2: Why NRL? */}
+          <div className="p-8 sm:p-10 rounded-3xl bg-[#0e0b18]/80 border border-white/[0.08] hover:border-purple-500/40 transition-all duration-300 backdrop-blur-xl shadow-xl hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col justify-between group">
+            <div className="space-y-6">
+              <div className="w-14 h-14 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center shadow-[0_0_20px_rgba(168,85,247,0.25)] group-hover:scale-105 transition-transform">
+                <Rocket size={28} />
+              </div>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-white tracking-tight">Why NRL?</h3>
+                <p className="text-zinc-300 leading-relaxed text-base font-light">
+                  The National Robotics League gives us the ultimate testing ground. It bridges the gap between theoretical classroom physics and real-world applied engineering. It's not just about winning battles; it's about mastering the manufacturing process.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 pt-6 mt-6 border-t border-white/[0.06]">
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-950/50 border border-purple-500/20 text-purple-300">Design-to-Fabrication</span>
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-950/50 border border-purple-500/20 text-purple-300">Precision CNC Machining</span>
+              <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-950/50 border border-purple-500/20 text-purple-300">Real-World Rigor</span>
+            </div>
+          </div>
         </div>
-        <div className="relative z-10 flex flex-col sm:flex-row flex-wrap gap-4 shrink-0">
-          <Link to="/innovation" className="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold transition-colors flex items-center gap-2">
-            Explore Our Process <ArrowRight size={18} />
+      </section>
+
+      {/* =========================================================================
+          3. ABOUT WESTSIDE TECH (Ridgevyn Feature Banner Card)
+         ========================================================================= */}
+      <section className="relative rounded-3xl bg-gradient-to-br from-[#120a24] via-[#0d071a] to-[#080510] border border-purple-500/30 p-8 sm:p-14 overflow-hidden shadow-[0_0_40px_rgba(168,85,247,0.15)]">
+        {/* Subtle decorative purple glow orbs */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div className="lg:col-span-8 space-y-5">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 text-xs font-semibold uppercase tracking-wider text-purple-300">
+              <Sparkles size={13} />
+              <span>About Westside Tech</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-tight">
+              Fostering Technical Innovation
+            </h2>
+
+            <p className="text-zinc-300 text-base sm:text-lg leading-relaxed font-light max-w-2xl">
+              With access to state-of-the-art CNC machining and 3D printing labs, our robotics club was founded to give students hands-on experience in full-cycle product development. From initial CAD sketches to tournament-ready hardware.
+            </p>
+
+            <div className="pt-2 flex flex-wrap gap-4 text-xs font-mono text-purple-300">
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> HAAS CNC Vertical Mills</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> Industrial Markforged Onyx</span>
+              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> In-House SMD Soldering Lab</span>
+            </div>
+          </div>
+
+          <div className="lg:col-span-4 flex flex-col gap-3 justify-center">
+            <Link
+              to="/innovation"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all text-center"
+            >
+              <span>Explore Our Process</span>
+              <ArrowRight size={16} />
+            </Link>
+
+            <Link
+              to="/innovation/mechanical"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-white/15 bg-white/[0.04] text-white hover:bg-white/[0.08] hover:border-purple-500/40 text-sm font-medium transition-all text-center backdrop-blur-md"
+            >
+              <span>View CAD Models</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          4. ROBOT & INNOVATION SUBSYSTEMS (Ridgevyn 3-Column Architecture)
+         ========================================================================= */}
+      <section className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="text-xs font-bold uppercase tracking-widest text-purple-400">Engineering Disciplines</div>
+            <h2 className="text-3xl font-semibold text-white tracking-tight mt-1">Core Subsystem Architecture</h2>
+          </div>
+          <Link
+            to="/innovation"
+            className="inline-flex items-center gap-1 text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors"
+          >
+            <span>View Full System Overview</span>
+            <ArrowRight size={16} />
           </Link>
-          <Link to="/mechanical" className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-xl font-semibold transition-colors">
-            View CAD Models
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Subsystem 1: Mechanical */}
+          <Link
+            to="/innovation/mechanical"
+            className="group p-6 sm:p-8 rounded-3xl bg-[#0e0b18]/70 border border-white/[0.08] hover:border-purple-500/50 hover:bg-[#130f24]/80 transition-all duration-300 backdrop-blur-xl shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all shadow-md">
+                <Wrench size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Mechanical & CAD</h3>
+                <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                  Billet 6061-T6 aluminum chassis, CNC toolpaths, and tendon pulleys engineered for maximum impact absorption.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-purple-400 pt-6 mt-6 border-t border-white/[0.06] group-hover:translate-x-1 transition-transform">
+              <span>Explore CAD revisions</span>
+              <ArrowRight size={14} />
+            </div>
+          </Link>
+
+          {/* Subsystem 2: Electronics */}
+          <Link
+            to="/innovation/electronics"
+            className="group p-6 sm:p-8 rounded-3xl bg-[#0e0b18]/70 border border-white/[0.08] hover:border-purple-500/50 hover:bg-[#130f24]/80 transition-all duration-300 backdrop-blur-xl shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all shadow-md">
+                <Cpu size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Electronics & Power</h3>
+                <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                  Dual MPU-6050 6-axis IMUs, custom power buses, and high-frequency PWM motor controllers with safety fail-safes.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-purple-400 pt-6 mt-6 border-t border-white/[0.06] group-hover:translate-x-1 transition-transform">
+              <span>View schematics & logs</span>
+              <ArrowRight size={14} />
+            </div>
+          </Link>
+
+          {/* Subsystem 3: Programming */}
+          <Link
+            to="/innovation/programming"
+            className="group p-6 sm:p-8 rounded-3xl bg-[#0e0b18]/70 border border-white/[0.08] hover:border-purple-500/50 hover:bg-[#130f24]/80 transition-all duration-300 backdrop-blur-xl shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all shadow-md">
+                <Code size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Programming & Logic</h3>
+                <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                  Real-time ESP32 firmware executing predictive PID loops to decouple voluntary intentional gestures from tremor noise.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-purple-400 pt-6 mt-6 border-t border-white/[0.06] group-hover:translate-x-1 transition-transform">
+              <span>Inspect algorithms</span>
+              <ArrowRight size={14} />
+            </div>
           </Link>
         </div>
       </section>
+
+      {/* =========================================================================
+          5. CALL TO ACTION / CHECKPOINTS JUMP (Ridgevyn Footer CTA)
+         ========================================================================= */}
+      <section className="p-8 sm:p-12 rounded-3xl bg-[#0e0b18]/90 border border-purple-500/20 backdrop-blur-xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 text-center sm:text-left">
+          <h3 className="text-2xl font-bold text-white">Track Our Season Progress</h3>
+          <p className="text-zinc-400 text-sm font-light">
+            Stay updated on all 12 NRL challenges, build blogs, and engineering milestones.
+          </p>
+        </div>
+        <div className="flex items-center gap-4 shrink-0">
+          <Link
+            to="/challenges"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium text-xs sm:text-sm shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:scale-[1.02] transition-all"
+          >
+            <span>View 12 Challenges</span>
+            <ArrowRight size={15} />
+          </Link>
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-white/10 bg-white/[0.03] hover:bg-white/[0.08] text-white text-xs sm:text-sm font-medium transition-all"
+          >
+            <span>Read Season Blog</span>
+          </Link>
+        </div>
+      </section>
+
     </motion.div>
   );
 }
