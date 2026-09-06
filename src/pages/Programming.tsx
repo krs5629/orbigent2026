@@ -71,9 +71,7 @@ export default function Programming() {
             Control Algorithms
           </span>
         </h1>
-        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
-          Real-time sensor filtering, PID loop tuning, ESP32 servo kinematics, and video telemetry verification.
-        </p>
+        
       </header>
 
       {/* Logic Snippets Section */}
@@ -83,7 +81,7 @@ export default function Programming() {
             <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
               <Terminal size={20} />
             </div>
-            <span>Logic Snippets & Firmware Files</span>
+            <span>Logic Snippets</span>
           </h2>
           <span className="text-xs text-zinc-400 font-mono">{snippets.length} Files</span>
         </div>

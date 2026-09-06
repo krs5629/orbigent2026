@@ -86,9 +86,7 @@ export default function Challenges() {
             Submissions
           </span>
         </h1>
-        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
-          Tracking the 12 competitive milestones, engineering design binder uploads, safety inspections, and autonomous testing documentation.
-        </p>
+       
       </header>
 
       <section className="bg-[#0e0b18]/80 backdrop-blur-xl rounded-3xl border border-white/[0.08] p-6 sm:p-12 shadow-2xl overflow-hidden relative">

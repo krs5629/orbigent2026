@@ -92,11 +92,7 @@ export default function Mechanical() {
             CAD Iterations
           </span>
         </h1>
-        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
-          {isRobot 
-            ? 'Weapon geometry FEA, CNC titanium chassis milling, drive pods, and physical evolution logs for the 2026 NRL arena combat bot.'
-            : 'Precision CAD renders, physical CNC prototypes, finite element analysis, and structural evolution logs for the 2026 innovation build.'}
-        </p>
+       
       </header>
 
       {/* CAD & Prototypes Grid */}

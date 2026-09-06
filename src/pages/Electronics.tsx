@@ -81,11 +81,7 @@ export default function Electronics() {
             Power Systems
           </span>
         </h1>
-        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
-          {isRobot 
-            ? '6S LiPo power distribution bus, brushless ESC telemetry, optical tachometers, and arena fail-safe switch architecture.'
-            : 'Wiring schematics, power rail distribution, dual MPU-6050 IMU integration, and real-time hardware troubleshooting records.'}
-        </p>
+        
       </header>
 
       {/* Troubleshooting Section (Ridgevyn Card Style) */}

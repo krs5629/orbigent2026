@@ -73,9 +73,7 @@ export default function Media() {
             Outreach
           </span>
         </h1>
-        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
-          High-resolution tournament footage, CNC workshop fabrication reels, CAD wireframes, and community STEM demonstrations.
-        </p>
+        
       </header>
 
       <section className="space-y-6">

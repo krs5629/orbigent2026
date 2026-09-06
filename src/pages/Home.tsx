@@ -45,7 +45,7 @@ export default function Home() {
 
         {/* Subtitle */}
         <p className="text-base sm:text-lg text-zinc-300 max-w-2xl mx-auto leading-relaxed mb-10 font-light">
-          Bridging the gap between theoretical classroom physics and industrial-grade applied engineering. High-performance combat robotics engineered with precision CNC machining, custom high-current power distribution, and closed-loop autonomous stabilization.
+          We are pushing robotics beyond competition by building two breakthrough systems: high‑performance battle bots for the NRL arena, and a wearable glove that stabilizes hand tremors. Together, these projects bridge fun, high‑energy engineering with real‑world medical impact, showing how robotics can fight in the arena and heal in daily life..
         </p>
 
         {/* CTA Button Group */}
@@ -68,25 +68,26 @@ export default function Home() {
         </div>
 
         {/* 4 Metric / Highlight Cards (Ridgevyn Signature Style) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 w-full mt-14 sm:mt-18 text-left">
-          {[
-            { metric: 'EST. 2024', label: 'Founded at Westside Tech', desc: 'Hands-on student engineering' },
-            { metric: '12 CHALLENGES', label: 'Season Milestones', desc: 'Comprehensive technical binder' },
-            { metric: '100% CAD DRIVEN', label: 'CNC Milled & 3D Printed', desc: '6061-T6 Aluminum & Carbon' },
-            { metric: 'CLOSED-LOOP', label: 'ESP32 & Dual IMUs', desc: 'Active tremor & motor control' },
-          ].map((stat, idx) => (
-            <div 
-              key={idx}
-              className="p-5 sm:p-6 rounded-2xl bg-[#0e0b18]/70 border border-white/[0.08] hover:border-purple-500/30 transition-all backdrop-blur-xl shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.12)]"
-            >
-              <div className="text-xl sm:text-2xl font-bold text-white tracking-tight mb-1 bg-gradient-to-r from-white via-purple-100 to-purple-300 bg-clip-text text-transparent">
-                {stat.metric}
-              </div>
-              <div className="text-xs font-semibold text-purple-300 mb-1">{stat.label}</div>
-              <div className="text-[11px] text-zinc-400 font-light">{stat.desc}</div>
-            </div>
-          ))}
-        </div>
+       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 w-full mt-14 sm:mt-18 text-center">
+  {[
+    { metric: 'TEAM JOURNEY' },
+    { metric: 'ROBOT ENGINEERING' },
+    { metric: 'INNOVATION PROJECTS' },
+    { metric: 'TECHNICAL RESOURCES' },
+  ].map((stat, idx) => (
+    <div 
+      key={idx}
+      className="flex items-center justify-center p-6 rounded-2xl bg-[#0e0b18]/70 border border-white/[0.08] hover:border-purple-500/30 transition-all backdrop-blur-xl shadow-lg hover:shadow-[0_0_20px_rgba(168,85,247,0.12)]"
+    >
+      <div className="text-lg sm:text-xl font-bold text-white tracking-tight bg-gradient-to-r from-white via-purple-100 to-purple-300 bg-clip-text text-transparent">
+        {stat.metric}
+      </div>
+    </div>
+  ))}
+</div>
+
+
+
 
       </section>
 
@@ -148,51 +149,54 @@ export default function Home() {
       {/* =========================================================================
           3. ABOUT WESTSIDE TECH (Ridgevyn Feature Banner Card)
          ========================================================================= */}
-      <section className="relative rounded-3xl bg-gradient-to-br from-[#120a24] via-[#0d071a] to-[#080510] border border-purple-500/30 p-8 sm:p-14 overflow-hidden shadow-[0_0_40px_rgba(168,85,247,0.15)]">
-        {/* Subtle decorative purple glow orbs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+     <section className="relative rounded-3xl bg-gradient-to-br from-[#120a24] via-[#0d071a] to-[#080510] border border-purple-500/30 p-8 sm:p-14 overflow-hidden shadow-[0_0_40px_rgba(168,85,247,0.15)]">
+  {/* Subtle decorative purple glow orbs */}
+  <div className="absolute top-0 right-0 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+  <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-8 space-y-5">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 text-xs font-semibold uppercase tracking-wider text-purple-300">
-              <Sparkles size={13} />
-              <span>About Westside Tech</span>
-            </div>
+  <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+    <div className="lg:col-span-8 space-y-5">
+      <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 text-xs font-semibold uppercase tracking-wider text-purple-300">
+        <Sparkles size={13} />
+        <span>About School of India Team</span>
+      </div>
 
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-tight">
-              Fostering Technical Innovation
-            </h2>
+      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-white tracking-tight leading-tight">
+       From Ideas to Action
+      </h2>
 
-            <p className="text-zinc-300 text-base sm:text-lg leading-relaxed font-light max-w-2xl">
-              With access to state-of-the-art CNC machining and 3D printing labs, our robotics club was founded to give students hands-on experience in full-cycle product development. From initial CAD sketches to tournament-ready hardware.
-            </p>
+      <p className="text-zinc-300 text-base sm:text-lg leading-relaxed font-light max-w-2xl">
+        We are a student team from School of India, working together to design and build robots for the NRL 2026 Arena. 
+        Our focus is on learning, experimenting, and creating — from early CAD sketches to working machines ready for competition.
+      </p>
 
-            <div className="pt-2 flex flex-wrap gap-4 text-xs font-mono text-purple-300">
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> HAAS CNC Vertical Mills</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> Industrial Markforged Onyx</span>
-              <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> In-House SMD Soldering Lab</span>
-            </div>
-          </div>
+      <div className="pt-2 flex flex-wrap gap-4 text-xs font-mono text-purple-300">
+        <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> Team Collaboration</span>
+        <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> Creative Engineering</span>
+        <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> Competition Ready</span>
+        <span className="flex items-center gap-1.5"><CheckCircle2 size={14} className="text-emerald-400" /> Innovation Spirit</span>
+      </div>
+    </div>
 
-          <div className="lg:col-span-4 flex flex-col gap-3 justify-center">
-            <Link
-              to="/innovation"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all text-center"
-            >
-              <span>Explore Our Process</span>
-              <ArrowRight size={16} />
-            </Link>
+    <div className="lg:col-span-4 flex flex-col gap-3 justify-center">
+      <Link
+        to="/innovation"
+        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold text-sm shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all text-center"
+      >
+        <span>Explore Our Process</span>
+        <ArrowRight size={16} />
+      </Link>
 
-            <Link
-              to="/innovation/mechanical"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-white/15 bg-white/[0.04] text-white hover:bg-white/[0.08] hover:border-purple-500/40 text-sm font-medium transition-all text-center backdrop-blur-md"
-            >
-              <span>View CAD Models</span>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <Link
+        to="/innovation/mechanical"
+        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-white/15 bg-white/[0.04] text-white hover:bg-white/[0.08] hover:border-purple-500/40 text-sm font-medium transition-all text-center backdrop-blur-md"
+      >
+        <span>View CAD Models</span>
+      </Link>
+    </div>
+  </div>
+</section>
+
 
       {/* =========================================================================
           4. ROBOT & INNOVATION SUBSYSTEMS (Ridgevyn 3-Column Architecture)
@@ -201,7 +205,7 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
             <div className="text-xs font-bold uppercase tracking-widest text-purple-400">Engineering Disciplines</div>
-            <h2 className="text-3xl font-semibold text-white tracking-tight mt-1">Core Subsystem Architecture</h2>
+            <h2 className="text-3xl font-semibold text-white tracking-tight mt-1">Core Subsystem Architecture For Smart Tremor Suppression Glove</h2>
           </div>
           <Link
             to="/innovation"

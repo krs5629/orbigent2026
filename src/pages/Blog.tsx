@@ -84,9 +84,7 @@ export default function Blog() {
             Technical Logs
           </span>
         </h1>
-        <p className="text-base sm:text-xl text-zinc-300 max-w-3xl leading-relaxed font-light">
-          Daily progress records, test-fire logs, CNC machining breakthroughs, and official NRL 2026 competition notes.
-        </p>
+       
       </header>
 
       {/* Admin Post Creator */}
