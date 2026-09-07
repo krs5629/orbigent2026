@@ -5,6 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
+    base:'/orbigent2026/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
