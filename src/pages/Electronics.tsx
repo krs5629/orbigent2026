@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Cpu, Activity, X, Plus, Sparkles, Download, ArrowRight, AlertTriangle, CheckCircle2 } from 'lucide-react';
 import { Uploader } from '../components/Uploader';
-import { db, storage, auth } from '../lib/firebase';
+import { db, storage, auth, isAuthorizedAdmin } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged, User } from 'firebase/auth';
@@ -16,6 +16,8 @@ export default function Electronics() {
   const [issueForm, setIssueForm] = useState({ title: '', desc: '', fix: '' });
   const [user, setUser] = useState<User | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  const isAdmin = isAuthorizedAdmin(user?.email);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, setUser);
@@ -31,7 +33,7 @@ export default function Electronics() {
   };
 
   const handleDiagramUpload = async (file: File) => {
-    if (!user) return;
+    if (!isAdmin) return;
     setUploading(true);
     try {
       const storageRef = ref(storage, `electronics_diagrams/${Date.now()}_${file.name}`);
@@ -44,7 +46,7 @@ export default function Electronics() {
   };
 
   const addIssue = async () => {
-    if (issueForm.title && user) {
+    if (issueForm.title && isAdmin) {
       await addDoc(collection(db, 'electronics_issues'), { ...issueForm, createdAt: new Date() });
       setIssueForm({ title: '', desc: '', fix: '' });
       fetchData();
@@ -81,7 +83,11 @@ export default function Electronics() {
             Power Systems
           </span>
         </h1>
-        
+        <p className="text-base sm:text-lg text-zinc-300 max-w-4xl leading-relaxed font-light">
+          {isRobot
+            ? 'Reliable batteries and smart circuits deliver steady power, keeping the robot’s motors and sensors running safely.'
+            : 'Smart sensors and a safe power system combine to track hand motion accurately while keeping performance reliable.'}
+        </p>
       </header>
 
       {/* Troubleshooting Section (Ridgevyn Card Style) */}
@@ -108,7 +114,7 @@ export default function Electronics() {
             <div key={issue.id} className="relative pl-7 border-l-2 border-purple-500/40 group py-1">
               <div className="absolute w-3.5 h-3.5 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-full -left-[8px] top-2 shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
               
-              {user && (
+              {isAdmin && (
                 <button 
                   onClick={() => deleteItem('electronics_issues', issue.id)} 
                   className="absolute top-1 right-0 text-zinc-400 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity p-1"
@@ -136,7 +142,7 @@ export default function Electronics() {
           ))}
         </div>
         
-        {user && (
+        {isAdmin && (
           <div className="bg-zinc-900/60 p-5 rounded-2xl border border-white/[0.08] flex flex-col gap-3">
             <div className="text-xs font-bold uppercase tracking-wider text-purple-400">Add New Troubleshooting Entry</div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -191,7 +197,7 @@ export default function Electronics() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {user && (
+          {isAdmin && (
             <div className="bg-zinc-950/80 rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-center items-center">
               <Uploader label={uploading ? "Uploading..." : "Upload Schematic"} onUpload={handleDiagramUpload} accept="image/*,.pdf" />
             </div>
@@ -202,7 +208,7 @@ export default function Electronics() {
               key={diag.id} 
               className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-300 relative group flex flex-col"
             >
-              {user && (
+              {isAdmin && (
                 <button 
                   onClick={() => deleteItem('electronics_diagrams', diag.id, diag.url)} 
                   className="absolute top-3 right-3 bg-rose-500/80 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-rose-600"
@@ -241,7 +247,7 @@ export default function Electronics() {
             </div>
           ))}
 
-          {diagrams.length === 0 && !user && (
+          {diagrams.length === 0 && !isAdmin && (
             <div className="col-span-full p-12 text-center bg-zinc-950/60 border border-white/[0.08] rounded-3xl">
               <Cpu size={36} className="mx-auto text-purple-400/50 mb-3" />
               <p className="text-zinc-400 text-sm">Electrical schematics and wiring diagrams will appear here.</p>

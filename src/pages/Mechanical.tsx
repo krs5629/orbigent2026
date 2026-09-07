@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Layers, FileBox, X, Plus, Sparkles, Download, ArrowRight } from 'lucide-react';
 import { Uploader } from '../components/Uploader';
-import { db, storage, auth } from '../lib/firebase';
+import { db, storage, auth, isAuthorizedAdmin } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged, User } from 'firebase/auth';
@@ -16,6 +16,8 @@ export default function Mechanical() {
   const [evoForm, setEvoForm] = useState({ version: '', changes: '', reason: '', result: '' });
   const [uploading, setUploading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+
+  const isAdmin = isAuthorizedAdmin(user?.email);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, setUser);
@@ -35,7 +37,7 @@ export default function Mechanical() {
   };
 
   const handleCadUpload = async (file: File) => {
-    if (!user) return;
+    if (!isAdmin) return;
     setUploading(true);
     try {
       const storageRef = ref(storage, `mechanical_cad/${Date.now()}_${file.name}`);
@@ -62,7 +64,7 @@ export default function Mechanical() {
   };
 
   const addEvolution = async () => {
-    if (evoForm.version && user) {
+    if (evoForm.version && isAdmin) {
       await addDoc(collection(db, 'mechanical_evolution'), { ...evoForm, createdAt: new Date() });
       setEvoForm({ version: '', changes: '', reason: '', result: '' });
       fetchEvolutions();
@@ -92,7 +94,11 @@ export default function Mechanical() {
             CAD Iterations
           </span>
         </h1>
-       
+        <p className="text-base sm:text-lg text-zinc-300 max-w-4xl leading-relaxed font-light">
+          {isRobot 
+            ? 'A tough robot frame with protective armor and strong parts designed to handle heavy hits in the arena.' 
+            : 'A strong glove frame shaped for comfort, using lightweight materials that balance durability with everyday wear.'}
+        </p>
       </header>
 
       {/* CAD & Prototypes Grid */}
@@ -110,7 +116,7 @@ export default function Mechanical() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {user && (
+          {isAdmin && (
             <div className="bg-zinc-950/80 rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-center items-center">
               <Uploader label={uploading ? "Uploading..." : "Upload CAD or Photo"} onUpload={handleCadUpload} accept="image/*,.pdf,.step,.stl" />
             </div>
@@ -121,7 +127,7 @@ export default function Mechanical() {
               key={cad.id} 
               className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-300 relative group flex flex-col"
             >
-              {user && (
+              {isAdmin && (
                 <button 
                   onClick={() => deleteCad(cad.id, cad.url)} 
                   className="absolute top-3 right-3 bg-rose-500/80 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-rose-600"
@@ -162,7 +168,7 @@ export default function Mechanical() {
             </div>
           ))}
 
-          {cads.length === 0 && !user && (
+          {cads.length === 0 && !isAdmin && (
             <div className="col-span-full p-12 text-center bg-zinc-950/60 border border-white/[0.08] rounded-3xl">
               <FileBox size={36} className="mx-auto text-purple-400/50 mb-3" />
               <p className="text-zinc-400 text-sm">CAD files and assembly models will be displayed here.</p>
@@ -191,13 +197,13 @@ export default function Mechanical() {
                 <th className="p-4 sm:p-5">Major Changes</th>
                 <th className="p-4 sm:p-5">Reason for Change</th>
                 <th className="p-4 sm:p-5">Result</th>
-                {user && <th className="p-4 sm:p-5 text-right">Actions</th>}
+                {isAdmin && <th className="p-4 sm:p-5 text-right">Actions</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-white/[0.05]">
               {evolutions.length === 0 && (
                 <tr>
-                  <td colSpan={user ? 5 : 4} className="p-8 text-center text-zinc-400 text-sm">
+                  <td colSpan={isAdmin ? 5 : 4} className="p-8 text-center text-zinc-400 text-sm">
                     No evolutions logged yet.
                   </td>
                 </tr>
@@ -212,7 +218,7 @@ export default function Mechanical() {
                   <td className="p-4 sm:p-5 text-zinc-200">{evo.changes || evo.majorChanges}</td>
                   <td className="p-4 sm:p-5 text-zinc-400">{evo.reason}</td>
                   <td className="p-4 sm:p-5 text-zinc-300">{evo.result}</td>
-                  {user && (
+                  {isAdmin && (
                     <td className="p-4 sm:p-5 text-right">
                       <button onClick={() => deleteEvolution(evo.id)} className="text-rose-400 hover:text-rose-300 p-1">
                         <X size={16} />
@@ -222,7 +228,7 @@ export default function Mechanical() {
                 </tr>
               ))}
 
-              {user && (
+              {isAdmin && (
                 <tr className="bg-zinc-900/80">
                   <td className="p-4">
                     <input 

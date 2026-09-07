@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Download, X, File, Sparkles, FileText, ArrowDownToLine } from 'lucide-react';
 import { Uploader } from '../components/Uploader';
-import { db, storage, auth } from '../lib/firebase';
+import { db, storage, auth, isAuthorizedAdmin } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged, User } from 'firebase/auth';
@@ -11,6 +11,8 @@ export default function Resources() {
   const [resources, setResources] = useState<any[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  const isAdmin = isAuthorizedAdmin(user?.email);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, setUser);
@@ -24,7 +26,7 @@ export default function Resources() {
   };
 
   const handleUpload = async (file: File) => {
-    if (!user) return;
+    if (!isAdmin) return;
     setUploading(true);
     try {
       const size = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
@@ -73,7 +75,7 @@ export default function Resources() {
       </header>
 
       <div className="space-y-6">
-        {user && (
+        {isAdmin && (
           <div className="bg-zinc-950/80 rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-center items-center">
             <Uploader label={uploading ? "Uploading..." : "Upload Resource Document"} onUpload={handleUpload} />
           </div>
@@ -120,7 +122,7 @@ export default function Resources() {
                     <ArrowDownToLine size={14} />
                     <span className="hidden sm:inline">Download</span>
                   </a>
-                  {user && (
+                  {isAdmin && (
                     <button 
                       onClick={() => deleteItem(res.id, res.url)} 
                       className="p-2 text-zinc-500 hover:text-rose-400 transition-colors" 

@@ -3,10 +3,9 @@ import { Mail, Linkedin, Github, Sparkles, Users, Award, Heart } from 'lucide-re
 import { useEffect, useState } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
-import { teamMembers as fallbackTeam } from '../data';
 
 export default function Team() {
-  const [teamMembers, setTeamMembers] = useState<any[]>(fallbackTeam);
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchTeam = async () => {
@@ -57,34 +56,41 @@ export default function Team() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {teamMembers.map((member) => (
-            <div 
-              key={member.name} 
-              className="flex flex-col sm:flex-row gap-5 p-6 bg-zinc-900/40 rounded-2xl border border-white/[0.08] hover:border-purple-500/40 hover:bg-purple-950/10 transition-all duration-300 group"
-            >
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-xl shrink-0 bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.3)] group-hover:scale-105 transition-transform">
-                {member.initials}
-              </div>
+        {teamMembers.length === 0 ? (
+          <div className="p-12 text-center bg-zinc-900/40 rounded-2xl border border-white/[0.08]">
+            <Users size={36} className="mx-auto text-purple-400/50 mb-3" />
+            <p className="text-zinc-400 text-sm font-light">Student engineering roster will appear here once published by team leads.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {teamMembers.map((member) => (
+              <div 
+                key={member.name} 
+                className="flex flex-col sm:flex-row gap-5 p-6 bg-zinc-900/40 rounded-2xl border border-white/[0.08] hover:border-purple-500/40 hover:bg-purple-950/10 transition-all duration-300 group"
+              >
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center font-bold text-xl shrink-0 bg-gradient-to-br from-purple-600 to-indigo-600 text-white shadow-[0_0_20px_rgba(168,85,247,0.3)] group-hover:scale-105 transition-transform">
+                  {member.initials}
+                </div>
 
-              <div className="flex flex-col justify-between flex-1">
-                <div>
-                  <h3 className="font-bold text-lg text-white group-hover:text-purple-300 transition-colors">{member.name}</h3>
-                  <div className="inline-block text-[11px] font-mono uppercase tracking-wider text-purple-400 font-semibold mb-2">
-                    {member.role}
+                <div className="flex flex-col justify-between flex-1">
+                  <div>
+                    <h3 className="font-bold text-lg text-white group-hover:text-purple-300 transition-colors">{member.name}</h3>
+                    <div className="inline-block text-[11px] font-mono uppercase tracking-wider text-purple-400 font-semibold mb-2">
+                      {member.role}
+                    </div>
+                    <p className="text-sm text-zinc-300 leading-relaxed">{member.desc}</p>
                   </div>
-                  <p className="text-sm text-zinc-300 leading-relaxed">{member.desc}</p>
-                </div>
-                
-                <div className="flex gap-4 text-zinc-400 mt-4 pt-3 border-t border-white/[0.05]">
-                  <a href="#" className="hover:text-purple-400 transition-colors"><Linkedin size={16} /></a>
-                  <a href="#" className="hover:text-purple-400 transition-colors"><Github size={16} /></a>
-                  <a href="#" className="hover:text-purple-400 transition-colors"><Mail size={16} /></a>
+                  
+                  <div className="flex gap-4 text-zinc-400 mt-4 pt-3 border-t border-white/[0.05]">
+                    <a href="#" className="hover:text-purple-400 transition-colors"><Linkedin size={16} /></a>
+                    <a href="#" className="hover:text-purple-400 transition-colors"><Github size={16} /></a>
+                    <a href="#" className="hover:text-purple-400 transition-colors"><Mail size={16} /></a>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Mentor & Advisor Showcase Banner */}

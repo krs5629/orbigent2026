@@ -2,7 +2,8 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
-      return request.auth != null;
+      return request.auth != null && 
+        request.auth.token.email in ['iniziofuturo@gmail.com', 'kyathi5629@gmail.com'];
     }
     match /{document=**} {
       allow read: if true;
@@ -10,3 +11,4 @@ service cloud.firestore {
     }
   }
 }
+

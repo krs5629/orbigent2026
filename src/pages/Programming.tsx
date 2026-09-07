@@ -1,18 +1,23 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { useLocation } from 'react-router-dom';
 import { Terminal, Play, X, FileCode, Sparkles, Download, ArrowRight, Code } from 'lucide-react';
 import { Uploader } from '../components/Uploader';
-import { db, storage, auth } from '../lib/firebase';
+import { db, storage, auth, isAuthorizedAdmin } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged, User } from 'firebase/auth';
 
 export default function Programming() {
+  const location = useLocation();
+  const isRobot = location.pathname.startsWith('/robot');
   const [snippets, setSnippets] = useState<any[]>([]);
   const [videos, setVideos] = useState<any[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [uploadingS, setUploadingS] = useState(false);
   const [uploadingV, setUploadingV] = useState(false);
+
+  const isAdmin = isAuthorizedAdmin(user?.email);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, setUser);
@@ -28,7 +33,7 @@ export default function Programming() {
   };
 
   const handleUpload = async (file: File, isVideo: boolean) => {
-    if (!user) return;
+    if (!isAdmin) return;
     const col = isVideo ? 'programming_media' : 'programming_logic';
     isVideo ? setUploadingV(true) : setUploadingS(true);
     try {
@@ -63,15 +68,19 @@ export default function Programming() {
       <header className="space-y-4">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-950/40 text-xs sm:text-sm font-medium tracking-wide text-purple-300 backdrop-blur-md">
           <Sparkles size={14} className="text-purple-400" />
-          <span>FIRMWARE & AUTONOMOUS SYSTEMS</span>
+          <span>{isRobot ? 'COMPETITION ROBOT • FIRMWARE & AUTONOMY' : 'INNOVATION SYSTEM • FIRMWARE & LOGIC'}</span>
         </div>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
-          Programming, Logic &{' '}
+          {isRobot ? 'Competition Robot ' : ''}Programming, Logic &{' '}
           <span className="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-indigo-300 bg-clip-text text-transparent">
             Control Algorithms
           </span>
         </h1>
-        
+        <p className="text-base sm:text-lg text-zinc-300 max-w-4xl leading-relaxed font-light">
+          {isRobot
+            ? 'Control software manages weapon spin and driving smoothly, while safety checks prevent system failures during matches.'
+            : 'Simple software separates tremors from real gestures, allowing natural movement to come through clearly.'}
+        </p>
       </header>
 
       {/* Logic Snippets Section */}
@@ -87,7 +96,7 @@ export default function Programming() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {user && (
+          {isAdmin && (
             <div className="bg-zinc-950/80 rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-center items-center">
               <Uploader label={uploadingS ? "Uploading..." : "Upload Code Snippet"} onUpload={(f) => handleUpload(f, false)} accept=".cpp,.h,.py,.ino,image/*" />
             </div>
@@ -98,7 +107,7 @@ export default function Programming() {
               key={s.id} 
               className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-300 relative group flex flex-col"
             >
-              {user && (
+              {isAdmin && (
                 <button 
                   onClick={() => deleteItem('programming_logic', s.id, s.url)} 
                   className="absolute top-3 right-3 bg-rose-500/80 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-rose-600"
@@ -134,7 +143,7 @@ export default function Programming() {
             </div>
           ))}
 
-          {snippets.length === 0 && !user && (
+          {snippets.length === 0 && !isAdmin && (
             <div className="col-span-full p-12 text-center bg-zinc-950/60 border border-white/[0.08] rounded-3xl">
               <Code size={36} className="mx-auto text-purple-400/50 mb-3" />
               <p className="text-zinc-400 text-sm">Code snippets, header files, and control loops will be shown here.</p>
@@ -156,7 +165,7 @@ export default function Programming() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {user && (
+          {isAdmin && (
             <div className="bg-zinc-950/80 rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-center items-center">
               <Uploader label={uploadingV ? "Uploading..." : "Upload Test Video/GIF"} onUpload={(f) => handleUpload(f, true)} accept="video/*,image/gif" />
             </div>
@@ -167,7 +176,7 @@ export default function Programming() {
               key={v.id} 
               className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.15)] transition-all duration-300 relative group flex flex-col"
             >
-              {user && (
+              {isAdmin && (
                 <button 
                   onClick={() => deleteItem('programming_media', v.id, v.url)} 
                   className="absolute top-3 right-3 bg-rose-500/80 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10 hover:bg-rose-600"
@@ -185,7 +194,7 @@ export default function Programming() {
             </div>
           ))}
 
-          {videos.length === 0 && !user && (
+          {videos.length === 0 && !isAdmin && (
             <div className="col-span-full p-12 text-center bg-zinc-950/60 border border-white/[0.08] rounded-3xl">
               <Play size={36} className="mx-auto text-purple-400/50 mb-3" />
               <p className="text-zinc-400 text-sm">Autonomous test videos and benchmark telemetry will appear here.</p>

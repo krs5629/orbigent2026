@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { X, Sparkles, ExternalLink, Play, Image as ImageIcon } from 'lucide-react';
 import { Uploader } from '../components/Uploader';
-import { db, storage, auth } from '../lib/firebase';
+import { db, storage, auth, isAuthorizedAdmin } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, orderBy, query } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged, User } from 'firebase/auth';
@@ -11,6 +11,8 @@ export default function Media() {
   const [media, setMedia] = useState<any[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  const isAdmin = isAuthorizedAdmin(user?.email);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, setUser);
@@ -24,7 +26,7 @@ export default function Media() {
   };
 
   const handleUpload = async (file: File) => {
-    if (!user) return;
+    if (!isAdmin) return;
     setUploading(true);
     try {
       const storageRef = ref(storage, `media_highlights/${Date.now()}_${file.name}`);
@@ -78,7 +80,7 @@ export default function Media() {
 
       <section className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {user && (
+          {isAdmin && (
             <div className="bg-[#0e0b18]/80 rounded-3xl p-6 border border-purple-500/30 flex flex-col justify-center items-center backdrop-blur-xl">
               <Uploader 
                 label={uploading ? "Processing Upload..." : "Add Photo or Video"} 
@@ -95,7 +97,7 @@ export default function Media() {
                 key={m.id} 
                 className="bg-[#0e0b18]/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] transition-all duration-300 relative group flex flex-col"
               >
-                {user && (
+                {isAdmin && (
                   <button 
                     onClick={() => deleteItem(m.id, m.url)} 
                     className="absolute top-3 right-3 bg-rose-600/90 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity z-20 hover:bg-rose-700 shadow-md"
@@ -144,7 +146,7 @@ export default function Media() {
             );
           })}
 
-          {media.length === 0 && !user && (
+          {media.length === 0 && !isAdmin && (
             <div className="col-span-full p-12 text-center bg-[#0e0b18]/60 border border-white/[0.08] rounded-3xl text-zinc-400 font-light">
               No media items uploaded yet. Check back soon for competition photos and workshop build videos.
             </div>

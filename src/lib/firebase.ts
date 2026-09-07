@@ -16,3 +16,13 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app, "ai-studio-nrl2026innovatio-08858706-99bd-4cc0-87ce-02b0cc21b25d");
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+
+export const ADMIN_EMAILS = [
+  'iniziofuturo@gmail.com',
+  'kyathi5629@gmail.com'
+];
+
+export function isAuthorizedAdmin(email?: string | null): boolean {
+  if (!email) return false;
+  return ADMIN_EMAILS.includes(email.toLowerCase().trim());
+}

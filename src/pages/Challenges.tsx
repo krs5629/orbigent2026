@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Target, CheckCircle2, Circle, FileText, X, Sparkles, Plus, Clock } from 'lucide-react';
 import { Uploader } from '../components/Uploader';
-import { db, storage, auth } from '../lib/firebase';
+import { db, storage, auth, isAuthorizedAdmin } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, updateDoc, doc, orderBy, query } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged, User } from 'firebase/auth';
@@ -12,6 +12,8 @@ export default function Challenges() {
   const [cForm, setCForm] = useState({ date: '', title: '', desc: '', status: 'current' });
   const [user, setUser] = useState<User | null>(null);
   const [uploadingId, setUploadingId] = useState<string | null>(null);
+
+  const isAdmin = isAuthorizedAdmin(user?.email);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, setUser);
@@ -25,7 +27,7 @@ export default function Challenges() {
   };
 
   const addChallenge = async () => {
-    if (cForm.title && user) {
+    if (cForm.title && isAdmin) {
       await addDoc(collection(db, 'challenges'), { ...cForm, createdAt: new Date() });
       setCForm({ date: '', title: '', desc: '', status: 'current' });
       fetchData();
@@ -45,7 +47,7 @@ export default function Challenges() {
   };
 
   const handleFileUpload = async (id: string, file: File) => {
-    if (!user) return;
+    if (!isAdmin) return;
     setUploadingId(id);
     try {
       const storageRef = ref(storage, `challenges/${Date.now()}_${file.name}`);
@@ -58,7 +60,7 @@ export default function Challenges() {
   };
 
   const removeFile = async (id: string, fileUrl: string) => {
-    if (!user) return;
+    if (!isAdmin) return;
     try {
       await deleteObject(ref(storage, fileUrl));
     } catch (e) {
@@ -120,10 +122,10 @@ export default function Challenges() {
 
               {/* Challenge Card */}
               <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 sm:p-7 rounded-2xl sm:rounded-3xl border border-white/[0.08] bg-[#120e22]/70 hover:bg-[#161229]/90 hover:border-purple-500/40 backdrop-blur-md shadow-xl transition-all duration-300 relative group/card">
-                {user && (
+                {isAdmin && (
                   <button 
                     onClick={() => deleteChallenge(item.id, item.fileUrl)} 
-                    className="absolute top-4 right-4 text-zinc-500 hover:text-rose-400 transition-colors p-1"
+                    className="absolute top-4 right-4 text-zinc-500 hover:text-rose-400 transition-colors p-1 cursor-pointer"
                   >
                     <X size={16}/>
                   </button>
@@ -162,7 +164,7 @@ export default function Challenges() {
                         {item.fileName || 'Official Submission PDF'}
                       </span>
                     </a>
-                    {user && (
+                    {isAdmin && (
                       <button 
                         onClick={() => removeFile(item.id, item.fileUrl)} 
                         className="text-zinc-500 hover:text-rose-400 p-1 shrink-0 ml-2"
@@ -171,7 +173,7 @@ export default function Challenges() {
                       </button>
                     )}
                   </div>
-                ) : user ? (
+                ) : isAdmin ? (
                   <div className="h-28">
                     <Uploader 
                       label={uploadingId === item.id ? "Uploading..." : "Attach Official Deliverable"} 
@@ -190,7 +192,7 @@ export default function Challenges() {
           ))}
         </div>
 
-        {user && (
+        {isAdmin && (
           <div className="bg-[#120e24]/80 p-6 sm:p-8 rounded-3xl border border-purple-500/30 max-w-2xl mx-auto w-full mt-10 backdrop-blur-xl">
             <h3 className="text-sm font-bold uppercase tracking-wider text-purple-300 mb-4 flex items-center gap-2">
               <Plus size={16} /> Add New Season Checkpoint

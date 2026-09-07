@@ -59,11 +59,11 @@ export default function Home() {
           </Link>
 
           <Link
-            to="/innovation/mechanical"
+            to="/robot/mechanical"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-white/15 bg-white/[0.04] text-white hover:bg-white/[0.08] hover:border-purple-500/40 text-sm sm:text-base font-medium tracking-wide transition-all backdrop-blur-md cursor-pointer"
           >
-            <Layers size={18} className="text-purple-300" />
-            <span>View Robot CAD Models</span>
+            <Wrench size={18} className="text-purple-300" />
+            <span>Explore Battle Bot Building Process</span>
           </Link>
         </div>
 
@@ -147,7 +147,7 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          3. ABOUT WESTSIDE TECH (Ridgevyn Feature Banner Card)
+          3. ABOUT SCHOOL OF INDIA (Ridgevyn Feature Banner Card)
          ========================================================================= */}
      <section className="relative rounded-3xl bg-gradient-to-br from-[#120a24] via-[#0d071a] to-[#080510] border border-purple-500/30 p-8 sm:p-14 overflow-hidden shadow-[0_0_40px_rgba(168,85,247,0.15)]">
   {/* Subtle decorative purple glow orbs */}
@@ -188,10 +188,10 @@ export default function Home() {
       </Link>
 
       <Link
-        to="/innovation/mechanical"
+        to="/robot/mechanical"
         className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-white/15 bg-white/[0.04] text-white hover:bg-white/[0.08] hover:border-purple-500/40 text-sm font-medium transition-all text-center backdrop-blur-md"
       >
-        <span>View CAD Models</span>
+        <span>Explore Battle Bot Development</span>
       </Link>
     </div>
   </div>
@@ -229,7 +229,7 @@ export default function Home() {
               <div className="space-y-2">
                 <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Mechanical & CAD</h3>
                 <p className="text-zinc-400 text-sm font-light leading-relaxed">
-                  Billet 6061-T6 aluminum chassis, CNC toolpaths, and tendon pulleys engineered for maximum impact absorption.
+                  A strong glove frame shaped for comfort, using lightweight materials that balance durability with everyday wear.
                 </p>
               </div>
             </div>
@@ -251,7 +251,7 @@ export default function Home() {
               <div className="space-y-2">
                 <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Electronics & Power</h3>
                 <p className="text-zinc-400 text-sm font-light leading-relaxed">
-                  Dual MPU-6050 6-axis IMUs, custom power buses, and high-frequency PWM motor controllers with safety fail-safes.
+                  Smart sensors and a safe power system combine to track hand motion accurately while keeping performance reliable.
                 </p>
               </div>
             </div>
@@ -273,7 +273,7 @@ export default function Home() {
               <div className="space-y-2">
                 <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Programming & Logic</h3>
                 <p className="text-zinc-400 text-sm font-light leading-relaxed">
-                  Real-time ESP32 firmware executing predictive PID loops to decouple voluntary intentional gestures from tremor noise.
+                  Simple software separates tremors from real gestures, allowing natural movement to come through clearly.
                 </p>
               </div>
             </div>
@@ -286,13 +286,100 @@ export default function Home() {
       </section>
 
       {/* =========================================================================
-          5. CALL TO ACTION / CHECKPOINTS JUMP (Ridgevyn Footer CTA)
+          5. BATTLE BOT SUBSYSTEMS (Core Subsystem Architecture For Battle Bot)
+         ========================================================================= */}
+      <section className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="text-xs font-bold uppercase tracking-widest text-purple-400">Engineering Disciplines</div>
+            <h2 className="text-3xl font-semibold text-white tracking-tight mt-1">Core Subsystem Architecture For Battle Bot</h2>
+          </div>
+          <Link
+            to="/robot/mechanical"
+            className="inline-flex items-center gap-1 text-sm font-medium text-purple-400 hover:text-purple-300 transition-colors"
+          >
+            <span>Explore Battle Bot Systems</span>
+            <ArrowRight size={16} />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Subsystem 1: Mechanical */}
+          <Link
+            to="/robot/mechanical"
+            className="group p-6 sm:p-8 rounded-3xl bg-[#0e0b18]/70 border border-white/[0.08] hover:border-purple-500/50 hover:bg-[#130f24]/80 transition-all duration-300 backdrop-blur-xl shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all shadow-md">
+                <Wrench size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Mechanical & CAD</h3>
+                <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                  A tough robot frame with protective armor and strong parts designed to handle heavy hits in the arena.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-purple-400 pt-6 mt-6 border-t border-white/[0.06] group-hover:translate-x-1 transition-transform">
+              <span>Explore CAD revisions</span>
+              <ArrowRight size={14} />
+            </div>
+          </Link>
+
+          {/* Subsystem 2: Electronics */}
+          <Link
+            to="/robot/electronics"
+            className="group p-6 sm:p-8 rounded-3xl bg-[#0e0b18]/70 border border-white/[0.08] hover:border-purple-500/50 hover:bg-[#130f24]/80 transition-all duration-300 backdrop-blur-xl shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all shadow-md">
+                <Cpu size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Electronics & Power</h3>
+                <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                  Reliable batteries and smart circuits deliver steady power, keeping the robot’s motors and sensors running safely.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-purple-400 pt-6 mt-6 border-t border-white/[0.06] group-hover:translate-x-1 transition-transform">
+              <span>View schematics & logs</span>
+              <ArrowRight size={14} />
+            </div>
+          </Link>
+
+          {/* Subsystem 3: Programming */}
+          <Link
+            to="/robot/programming"
+            className="group p-6 sm:p-8 rounded-3xl bg-[#0e0b18]/70 border border-white/[0.08] hover:border-purple-500/50 hover:bg-[#130f24]/80 transition-all duration-300 backdrop-blur-xl shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.2)] flex flex-col justify-between"
+          >
+            <div className="space-y-4">
+              <div className="w-12 h-12 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all shadow-md">
+                <Code size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Programming & Logic</h3>
+                <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                  Control software manages weapon spin and driving smoothly, while safety checks prevent system failures during matches.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-purple-400 pt-6 mt-6 border-t border-white/[0.06] group-hover:translate-x-1 transition-transform">
+              <span>Inspect algorithms</span>
+              <ArrowRight size={14} />
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          6. CALL TO ACTION / CHECKPOINTS JUMP (Ridgevyn Footer CTA)
          ========================================================================= */}
       <section className="p-8 sm:p-12 rounded-3xl bg-[#0e0b18]/90 border border-purple-500/20 backdrop-blur-xl shadow-xl flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="space-y-2 text-center sm:text-left">
           <h3 className="text-2xl font-bold text-white">Track Our Season Progress</h3>
           <p className="text-zinc-400 text-sm font-light">
-            Stay updated on all 12 NRL challenges, build blogs, and engineering milestones.
+            Stay updated on NRL season challenges, build blogs, and engineering milestones.
           </p>
         </div>
         <div className="flex items-center gap-4 shrink-0">
@@ -300,7 +387,7 @@ export default function Home() {
             to="/challenges"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium text-xs sm:text-sm shadow-[0_0_20px_rgba(168,85,247,0.3)] hover:scale-[1.02] transition-all"
           >
-            <span>View 12 Challenges</span>
+            <span>View Season Challenges</span>
             <ArrowRight size={15} />
           </Link>
           <Link

@@ -82,6 +82,81 @@ export default function Innovation() {
         </div>
       </section>
 
+      {/* Core Subsystem Architecture */}
+      <section className="space-y-6">
+        <div>
+          <div className="text-xs font-bold uppercase tracking-widest text-purple-400">Technical Foundations</div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">
+            Core Subsystem Architecture
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Link
+            to="/innovation/mechanical"
+            className="group relative rounded-3xl p-8 bg-[#0e0b18]/80 border border-white/[0.08] hover:border-purple-500/50 hover:bg-[#130f22] backdrop-blur-xl transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]"
+          >
+            <div>
+              <div className="w-12 h-12 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all shadow-md mb-6">
+                <Wrench size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Mechanical & CAD</h3>
+                <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                  A strong glove frame shaped for comfort, using lightweight materials that balance durability with everyday wear.
+                </p>
+              </div>
+            </div>
+            <div className="pt-6 mt-6 border-t border-white/[0.06] flex items-center justify-between text-xs font-semibold text-purple-400 group-hover:text-purple-300">
+              <span>View CAD & Hardware</span>
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          <Link
+            to="/innovation/electronics"
+            className="group relative rounded-3xl p-8 bg-[#0e0b18]/80 border border-white/[0.08] hover:border-purple-500/50 hover:bg-[#130f22] backdrop-blur-xl transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]"
+          >
+            <div>
+              <div className="w-12 h-12 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all shadow-md mb-6">
+                <Cpu size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Electronics & Power</h3>
+                <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                  Smart sensors and a safe power system combine to track hand motion accurately while keeping performance reliable.
+                </p>
+              </div>
+            </div>
+            <div className="pt-6 mt-6 border-t border-white/[0.06] flex items-center justify-between text-xs font-semibold text-purple-400 group-hover:text-purple-300">
+              <span>View Wiring & Power</span>
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          <Link
+            to="/innovation/programming"
+            className="group relative rounded-3xl p-8 bg-[#0e0b18]/80 border border-white/[0.08] hover:border-purple-500/50 hover:bg-[#130f22] backdrop-blur-xl transition-all duration-300 flex flex-col justify-between overflow-hidden shadow-lg hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]"
+          >
+            <div>
+              <div className="w-12 h-12 rounded-2xl bg-purple-950/60 border border-purple-500/30 text-purple-300 flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-all shadow-md mb-6">
+                <Code size={22} />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-white group-hover:text-purple-200 transition-colors">Programming & Logic</h3>
+                <p className="text-zinc-400 text-sm font-light leading-relaxed">
+                  Simple software separates tremors from real gestures, allowing natural movement to come through clearly.
+                </p>
+              </div>
+            </div>
+            <div className="pt-6 mt-6 border-t border-white/[0.06] flex items-center justify-between text-xs font-semibold text-purple-400 group-hover:text-purple-300">
+              <span>View Control Code</span>
+              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* How It Works Flowchart */}
       <section className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl border border-white/[0.08] hover:border-purple-500/30 p-8 sm:p-10 shadow-xl transition-all">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">

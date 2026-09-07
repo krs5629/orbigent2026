@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { CalendarDays, X, Image as ImageIcon, Sparkles, Send, Tag } from 'lucide-react';
-import { db, auth, storage } from '../lib/firebase';
+import { db, auth, storage, isAuthorizedAdmin } from '../lib/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged, User } from 'firebase/auth';
@@ -12,6 +12,8 @@ export default function Blog() {
   const [form, setForm] = useState({ title: '', excerpt: '', author: 'Admin' });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+
+  const isAdmin = isAuthorizedAdmin(user?.email);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, setUser);
@@ -88,13 +90,13 @@ export default function Blog() {
       </header>
 
       {/* Admin Post Creator */}
-      {user && (
+      {isAdmin && (
         <section className="bg-zinc-950/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-purple-500/40 shadow-[0_0_30px_rgba(168,85,247,0.15)] flex flex-col gap-4">
           <div className="flex items-center justify-between pb-3 border-b border-white/[0.08]">
             <h2 className="text-xs font-bold uppercase tracking-widest text-purple-400 flex items-center gap-2">
               <Sparkles size={14} /> New Engineering Dispatch
             </h2>
-            <span className="text-xs font-mono text-zinc-400">Authenticated as {user.email || 'Lead'}</span>
+            <span className="text-xs font-mono text-zinc-400">Authenticated as {user?.email || 'Lead'}</span>
           </div>
 
           <input 
@@ -139,7 +141,7 @@ export default function Blog() {
       <div className="space-y-6">
         {posts.length === 0 && (
           <div className="text-zinc-400 p-12 text-center bg-zinc-950/60 rounded-3xl border border-white/[0.08]">
-            <p className="text-sm">No blog dispatches recorded yet. {user ? "Publish your first log above!" : "Log in via Admin to start publishing updates."}</p>
+            <p className="text-sm">No blog dispatches recorded yet. {isAdmin ? "Publish your first log above!" : "Check back soon for team engineering updates."}</p>
           </div>
         )}
 
@@ -148,7 +150,7 @@ export default function Blog() {
             key={post.id} 
             className="bg-zinc-950/80 backdrop-blur-xl rounded-3xl p-6 sm:p-10 border border-white/[0.08] hover:border-purple-500/40 hover:shadow-[0_0_35px_rgba(168,85,247,0.12)] transition-all duration-300 relative group overflow-hidden"
           >
-            {user && (
+            {isAdmin && (
               <button 
                 onClick={() => deletePost(post.id, post.imageUrl)} 
                 className="absolute top-6 right-6 text-zinc-500 hover:text-rose-400 opacity-0 group-hover:opacity-100 transition-opacity z-10 p-1"

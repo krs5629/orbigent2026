@@ -23,18 +23,18 @@ const navItems = [
     id: 'innovation',
     dropdown: [
       { path: '/innovation', label: 'System Overview', icon: Lightbulb, desc: 'Wearable tremor suppression glove concept & feedback loop' },
-      { path: '/innovation/mechanical', label: 'Mechanical & CAD', icon: Wrench, desc: 'CNC toolpaths, CAD revisions, and tendon mechanisms' },
-      { path: '/innovation/electronics', label: 'Electronics & Power', icon: Cpu, desc: 'Dual MPU-6050 IMUs, ESP32 wiring, and power distribution' },
-      { path: '/innovation/programming', label: 'Programming & Logic', icon: Code, desc: 'PID stabilization algorithms and motion telemetry' },
+      { path: '/innovation/mechanical', label: 'Mechanical & CAD', icon: Wrench, desc: 'A strong glove frame shaped for comfort, using lightweight materials that balance durability with everyday wear.' },
+      { path: '/innovation/electronics', label: 'Electronics & Power', icon: Cpu, desc: 'Smart sensors and a safe power system combine to track hand motion accurately while keeping performance reliable.' },
+      { path: '/innovation/programming', label: 'Programming & Logic', icon: Code, desc: 'Simple software separates tremors from real gestures, allowing natural movement to come through clearly.' },
     ]
   },
   { 
     label: 'Competition Robot', 
     id: 'robot',
     dropdown: [
-      { path: '/robot/mechanical', label: 'Mechanical & CAD', icon: Wrench, desc: 'CNC weapon discs, titanium chassis, and armor geometry' },
-      { path: '/robot/electronics', label: 'Electronics & Power', icon: Cpu, desc: '6S LiPo power bus, brushless ESCs, and fail-safe wiring' },
-      { path: '/robot/programming', label: 'Programming & Logic', icon: Code, desc: 'Weapon spin-up control loops, telemetry, and drive kinematics' },
+      { path: '/robot/mechanical', label: 'Mechanical & CAD', icon: Wrench, desc: 'A tough robot frame with protective armor and strong parts designed to handle heavy hits in the arena.' },
+      { path: '/robot/electronics', label: 'Electronics & Power', icon: Cpu, desc: 'Reliable batteries and smart circuits deliver steady power, keeping the robot’s motors and sensors running safely.' },
+      { path: '/robot/programming', label: 'Programming & Logic', icon: Code, desc: 'Control software manages weapon spin and driving smoothly, while safety checks prevent system failures during matches.' },
     ]
   },
   { path: '/challenges', label: 'Challenges' },
@@ -60,10 +60,13 @@ export default function Layout() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close dropdown on outside click or navigation
+  // Close dropdown and scroll to top on navigation
   useEffect(() => {
     setActiveDropdown(null);
     setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [location.pathname]);
 
   useEffect(() => {
@@ -164,7 +167,7 @@ export default function Layout() {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 6, scale: 0.98 }}
                           transition={{ duration: 0.15 }}
-                          className="absolute top-full left-0 mt-3 w-80 bg-[#0c0915]/95 border border-white/10 rounded-2xl p-2.5 shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-2xl z-50 flex flex-col gap-1"
+                          className="absolute top-full left-0 mt-3 w-[22rem] bg-[#0c0915]/95 border border-white/10 rounded-2xl p-2.5 shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-2xl z-50 flex flex-col gap-1"
                         >
                           <div className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-purple-400 border-b border-white/[0.06] mb-1">
                             {item.label} Subsystems
@@ -188,7 +191,7 @@ export default function Layout() {
                                 </div>
                                 <div className="flex flex-col">
                                   <span className="text-xs font-semibold">{sub.label}</span>
-                                  <span className="text-[11px] text-zinc-400 font-light leading-snug line-clamp-2 mt-0.5">{sub.desc}</span>
+                                  <span className="text-[11px] text-zinc-400 font-light leading-snug mt-0.5">{sub.desc}</span>
                                 </div>
                               </Link>
                             );
@@ -244,7 +247,8 @@ export default function Layout() {
           <div className="flex items-center gap-2 xl:hidden">
             <Link
               to="/admin"
-              className="p-2 rounded-full border border-white/10 text-zinc-300 hover:text-white"
+              className="sm:hidden p-2 rounded-full border border-white/10 text-zinc-300 hover:text-white"
+              title="Admin Dashboard"
             >
               <Settings size={18} />
             </Link>
@@ -422,7 +426,7 @@ export default function Layout() {
                 </div>
               </div>
               <p className="text-sm text-zinc-400 leading-relaxed font-light">
-                Combat robotics and wearable medical engineering at Westside Tech.
+                Combat robotics and wearable medical engineering at School of India.
               </p>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/50 border border-purple-800/40 text-xs text-purple-300 font-mono">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -435,7 +439,7 @@ export default function Layout() {
               <h4 className="text-xs font-bold uppercase tracking-wider text-white">Navigation</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link to="/" className="hover:text-purple-300 transition-colors">Home / About</Link></li>
-                <li><Link to="/challenges" className="hover:text-purple-300 transition-colors">12 Season Challenges</Link></li>
+                <li><Link to="/challenges" className="hover:text-purple-300 transition-colors">Season Challenges</Link></li>
                 <li><Link to="/blog" className="hover:text-purple-300 transition-colors">Season Journey Blog</Link></li>
                 <li><Link to="/media" className="hover:text-purple-300 transition-colors">Media Highlights</Link></li>
                 <li><Link to="/team" className="hover:text-purple-300 transition-colors">Team & Mentors</Link></li>
@@ -469,9 +473,7 @@ export default function Layout() {
               <h4 className="text-xs font-bold uppercase tracking-wider text-white">Resources & Portal</h4>
               <ul className="space-y-2 text-sm">
                 <li><Link to="/admin" className="hover:text-purple-300 transition-colors flex items-center gap-1.5"><Settings size={14} /> Admin Access</Link></li>
-                <li><Link to="/resources" className="hover:text-purple-300 transition-colors">Engineering Binder PDF</Link></li>
-                <li><Link to="/resources" className="hover:text-purple-300 transition-colors">Safety Revision Sheets</Link></li>
-                <li><Link to="/challenges" className="hover:text-purple-300 transition-colors">Checkpoints Timeline</Link></li>
+                <li><Link to="/resources" className="hover:text-purple-300 transition-colors">Resources</Link></li>
               </ul>
             </div>
 
@@ -479,7 +481,7 @@ export default function Layout() {
 
           {/* Bottom Divider & Copyright */}
           <div className="pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-light text-zinc-500">
-            <p>© {new Date().getFullYear()} Team Orbigent 160 • Westside Tech Robotics Club. All rights reserved.</p>
+            <p>© {new Date().getFullYear()} Team Orbigent 160 • School of India Robotics Club. All rights reserved.</p>
             <div className="flex items-center gap-6">
               <span className="text-zinc-500">National Robotics League Showcase</span>
               <span className="text-purple-400 font-mono text-[11px]">HAAS CNC • ESP32 • SOLIDWORKS</span>
