@@ -3,19 +3,19 @@ name: Deploy Vite React App
 on:
   push:
     branches:
-      - main   # run this whenever you push to main
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4   # latest version
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 24          # explicitly use Node.js 24
 
       - name: Install dependencies
         run: npm install
